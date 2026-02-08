@@ -1,41 +1,37 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-const firebaseConfig = {
- apiKey: "...",
- authDomain: "...",
- projectId: "...",
- storageBucket: "...",
- messagingSenderId: "...",
- appId: "..."
-};
+const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.login = async () => {
- await signInWithEmailAndPassword(auth,
- email.value,
- password.value);
- alert("Logged in");
-};
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 window.createEvent = async () => {
- await addDoc(collection(db,"events"),{
-   name:eventName.value,
-   created:Date.now()
- });
- loadEvents();
+  const name = document.getElementById("eventName").value;
+
+  if (!name) {
+    alert("Enter event name");
+    return;
+  }
+
+  const { error } = await supabase.from("events").insert([{ name }]);
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Event created");
+    loadEvents();
+  }
 };
 
-async function loadEvents(){
- const snap = await getDocs(collection(db,"events"));
- events.innerHTML="";
- snap.forEach(d=>{
-  events.innerHTML+=`<p>${d.data().name}</p>`;
- });
+async function loadEvents() {
+  const { data } = await supabase.from("events").select("*");
+
+  const box = document.getElementById("events");
+  box.innerHTML = "";
+
+  data.forEach(e => {
+    box.innerHTML += `<p>${e.name}</p>`;
+  });
 }
 
 loadEvents();
