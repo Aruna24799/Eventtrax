@@ -1,19 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Eventtrax</title>
+  <title>eventtrax</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>Eventtrax</h1>
+<h1>eventtrax</h1>
 
-<input id="eventName" placeholder="event name">
-<button onclick="addEvent()">Create Event</button>
+<!-- CREATE EVENT -->
+<h3>Create Event</h3>
 
+<input id="eventName" placeholder="Event Name">
+<button onclick="createEvent()">Create Event</button>
+
+<hr>
+
+<!-- JOIN EVENT -->
+<h3>Join Event</h3>
+
+<input id="participantName" placeholder="Your Name">
+<input id="eventId" placeholder="Event ID">
+
+<button onclick="joinEvent()">Join</button>
+
+<hr>
+
+<!-- DISPLAY -->
+<h3>Events</h3>
 <div id="events"></div>
 
-<script type="module" src="script.js"></script>
+<h3>Participants</h3>
+<div id="participants"></div>
+
+<script type="module" src="./script.js"></script>
 
 </body>
 </html>
