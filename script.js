@@ -5,7 +5,6 @@ const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Generate Event ID
 function generateEventId() {
   return "EVT-" + Math.floor(100000 + Math.random() * 900000);
 }
@@ -13,98 +12,65 @@ function generateEventId() {
 // CREATE EVENT
 window.createNewEvent = async () => {
   const name = document.getElementById("eventName").value;
+  if (!name) return alert("Enter event");
 
-  if (!name) {
-    alert("enter event");
-    return;
-  }
+  const event_id = generateEventId();
 
-  const eventId = generateEventId();
+  const { error } = await supabase.from("events").insert([{ name, event_id }]);
 
-  const { error } = await supabase.from("events").insert([
-    {
-      name: name,
-      event_id: eventId
-    }
-  ]);
+  if (error) return alert(error.message);
 
-  if (error) {
-    alert(error.message);
-    console.log(error);
-    return;
-  }
-
+  alert("Event Created: " + event_id);
   document.getElementById("eventName").value = "";
-  alert("Event created: " + eventId);
-
   loadEvents();
 };
 
 // JOIN EVENT
 window.joinEvent = async () => {
   const name = document.getElementById("participantName").value;
-  const eventId = document.getElementById("eventId").value;
+  const event_id = document.getElementById("eventId").value;
 
-  if (!name || !eventId) {
-    alert("enter name and event id");
-    return;
-  }
+  if (!name || !event_id) return alert("Enter name and event id");
 
-  const { error } = await supabase.from("participants").insert([
-    {
-      name: name,
-      event_id: eventId
-    }
-  ]);
+  const { error } = await supabase.from("participants").insert([{ name, event_id }]);
 
-  if (error) {
-    alert(error.message);
-    console.log(error);
-    return;
-  }
+  if (error) return alert(error.message);
 
+  alert("Joined Event");
   document.getElementById("participantName").value = "";
-  alert("Joined event");
-
-  loadParticipants(eventId);
 };
 
 // LOAD EVENTS
 async function loadEvents() {
-  const { data, error } = await supabase.from("events").select("*");
+  const { data } = await supabase.from("events").select("*");
 
-  if (error) {
-    console.log(error);
-    return;
-  }
+  const eventsBox = document.getElementById("events");
+  const dropdown = document.getElementById("adminEventSelect");
 
-  const box = document.getElementById("events");
-  box.innerHTML = "";
+  eventsBox.innerHTML = "";
+  dropdown.innerHTML = "";
 
   data.forEach(e => {
-    box.innerHTML += `<p><b>${e.event_id}</b> — ${e.name}</p>`;
+    eventsBox.innerHTML += `<p><b>${e.event_id}</b> — ${e.name}</p>`;
+    dropdown.innerHTML += `<option value="${e.event_id}">${e.event_id} - ${e.name}</option>`;
   });
 }
 
-// LOAD PARTICIPANTS
-async function loadParticipants(eventId) {
-  const { data, error } = await supabase
+// ADMIN VIEW
+window.loadAdminParticipants = async () => {
+  const eventId = document.getElementById("adminEventSelect").value;
+
+  const { data } = await supabase
     .from("participants")
     .select("*")
     .eq("event_id", eventId);
 
-  if (error) {
-    console.log(error);
-    return;
-  }
-
-  const box = document.getElementById("participants");
-  box.innerHTML = "";
+  const box = document.getElementById("adminParticipants");
+  box.innerHTML = "<h4>Participants</h4>";
 
   data.forEach(p => {
     box.innerHTML += `<p>${p.name}</p>`;
   });
-}
+};
 
-// Initial load
 loadEvents();
