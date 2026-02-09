@@ -1,41 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>EventTrax</title>
+  <title>Eventtrax</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>EventTrax</h1>
+<div class="app">
 
-<!-- CREATE EVENT -->
+<h1>Eventtrax Admin</h1>
+
+<section class="card">
+
 <h3>Create Event</h3>
-
 <input id="eventName" placeholder="Event Name">
-<button onclick="createEvent()">Create Event</button>
+<button onclick="createNewEvent()">Create Event</button>
 
-<hr>
+</section>
 
-<!-- JOIN EVENT -->
+<section class="card">
+
 <h3>Join Event</h3>
-
 <input id="participantName" placeholder="Your Name">
 <input id="eventId" placeholder="Event ID">
+<button onclick="joinEvent()">Join Event</button>
 
-<button onclick="joinEvent()">Join</button>
+</section>
 
-<hr>
+<section class="card">
 
-<!-- DISPLAY -->
-<h3>Events</h3>
+<h3>Admin Dashboard</h3>
+
+<select id="adminEventSelect"></select>
+<button onclick="loadAdminParticipants()">View Participants</button>
+
+<div id="adminParticipants"></div>
+
+</section>
+
+<section class="card">
+
+<h3>All Events</h3>
 <div id="events"></div>
 
-<h3>Participants</h3>
-<div id="participants"></div>
+</section>
 
-<script type="module" src="./script.js"></script>
+</div>
+
+<script type="module" src="script.js"></script>
 
 </body>
-</html>
-
+</html> 
