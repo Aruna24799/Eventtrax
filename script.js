@@ -5,17 +5,11 @@ const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// LOGIN
-async function login() {
-  alert("Login not implemented yet");
-}
-
-// CREATE EVENT
-async function createEvent() {
+window.addEvent = async () => {
   const name = document.getElementById("eventName").value;
 
   if (!name) {
-    alert("Enter event name");
+    alert("enter event");
     return;
   }
 
@@ -23,29 +17,28 @@ async function createEvent() {
 
   if (error) {
     alert(error.message);
-  } else {
-    alert("Event created");
-    loadEvents();
+    console.log(error);
+    return;
   }
-}
 
-// LOAD EVENTS
+  document.getElementById("eventName").value = "";
+  loadEvents();
+};
+
 async function loadEvents() {
-  const { data } = await supabase.from("events").select("*");
+  const { data, error } = await supabase.from("events").select("*");
+
+  if (error) {
+    console.log(error);
+    return;
+  }
 
   const box = document.getElementById("events");
   box.innerHTML = "";
-
-  if (!data) return;
 
   data.forEach(e => {
     box.innerHTML += `<p>${e.name}</p>`;
   });
 }
 
-// EXPOSE FUNCTIONS TO HTML
-window.createEvent = createEvent;
-window.login = login;
-
-// INITIAL LOAD
 loadEvents();
