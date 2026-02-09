@@ -5,7 +5,13 @@ const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-window.createEvent = async () => {
+// LOGIN
+async function login() {
+  alert("Login not implemented yet");
+}
+
+// CREATE EVENT
+async function createEvent() {
   const name = document.getElementById("eventName").value;
 
   if (!name) {
@@ -20,20 +26,26 @@ window.createEvent = async () => {
   } else {
     alert("Event created");
     loadEvents();
-    window.createEvent = createEvent;
   }
-};
+}
 
+// LOAD EVENTS
 async function loadEvents() {
   const { data } = await supabase.from("events").select("*");
 
   const box = document.getElementById("events");
   box.innerHTML = "";
 
+  if (!data) return;
+
   data.forEach(e => {
     box.innerHTML += `<p>${e.name}</p>`;
   });
 }
 
-loadEvents();
+// EXPOSE FUNCTIONS TO HTML
+window.createEvent = createEvent;
+window.login = login;
 
+// INITIAL LOAD
+loadEvents();
