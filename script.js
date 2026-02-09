@@ -5,6 +5,11 @@ const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// Generate Event ID
+function generateEventId() {
+  return "EVT-" + Math.floor(100000 + Math.random() * 900000);
+}
+
 window.addEvent = async () => {
   const name = document.getElementById("eventName").value;
 
@@ -13,7 +18,14 @@ window.addEvent = async () => {
     return;
   }
 
-  const { error } = await supabase.from("events").insert([{ name }]);
+  const eventId = generateEventId();
+
+  const { error } = await supabase.from("events").insert([
+    {
+      name: name,
+      event_id: eventId
+    }
+  ]);
 
   if (error) {
     alert(error.message);
@@ -26,18 +38,13 @@ window.addEvent = async () => {
 };
 
 async function loadEvents() {
-  const { data, error } = await supabase.from("events").select("*");
-
-  if (error) {
-    console.log(error);
-    return;
-  }
+  const { data } = await supabase.from("events").select("*");
 
   const box = document.getElementById("events");
   box.innerHTML = "";
 
   data.forEach(e => {
-    box.innerHTML += `<p>${e.name}</p>`;
+    box.innerHTML += `<p><b>${e.event_id}</b> — ${e.name}</p>`;
   });
 }
 
