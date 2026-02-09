@@ -10,7 +10,8 @@ function generateEventId() {
   return "EVT-" + Math.floor(100000 + Math.random() * 900000);
 }
 
-window.addEvent = async () => {
+// CREATE EVENT
+window.createNewEvent = async () => {
   const name = document.getElementById("eventName").value;
 
   if (!name) {
@@ -34,11 +35,48 @@ window.addEvent = async () => {
   }
 
   document.getElementById("eventName").value = "";
+  alert("Event created: " + eventId);
+
   loadEvents();
 };
 
+// JOIN EVENT
+window.joinEvent = async () => {
+  const name = document.getElementById("participantName").value;
+  const eventId = document.getElementById("eventId").value;
+
+  if (!name || !eventId) {
+    alert("enter name and event id");
+    return;
+  }
+
+  const { error } = await supabase.from("participants").insert([
+    {
+      name: name,
+      event_id: eventId
+    }
+  ]);
+
+  if (error) {
+    alert(error.message);
+    console.log(error);
+    return;
+  }
+
+  document.getElementById("participantName").value = "";
+  alert("Joined event");
+
+  loadParticipants(eventId);
+};
+
+// LOAD EVENTS
 async function loadEvents() {
-  const { data } = await supabase.from("events").select("*");
+  const { data, error } = await supabase.from("events").select("*");
+
+  if (error) {
+    console.log(error);
+    return;
+  }
 
   const box = document.getElementById("events");
   box.innerHTML = "";
@@ -48,4 +86,25 @@ async function loadEvents() {
   });
 }
 
+// LOAD PARTICIPANTS
+async function loadParticipants(eventId) {
+  const { data, error } = await supabase
+    .from("participants")
+    .select("*")
+    .eq("event_id", eventId);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  const box = document.getElementById("participants");
+  box.innerHTML = "";
+
+  data.forEach(p => {
+    box.innerHTML += `<p>${p.name}</p>`;
+  });
+}
+
+// Initial load
 loadEvents();
