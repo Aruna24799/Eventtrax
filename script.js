@@ -20,6 +20,7 @@ window.createEvent = async () => {
   } else {
     alert("Event created");
     loadEvents();
+    window.createEvent = createEvent;
   }
 };
 
@@ -35,3 +36,4 @@ async function loadEvents() {
 }
 
 loadEvents();
+
