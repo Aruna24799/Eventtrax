@@ -2,26 +2,40 @@
 <html>
 <head>
 <title>Eventtrax</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
 
+<h1>Eventtrax</h1>
+
+<hr>
+
+<!-- ADMIN SECTION -->
 <h2>Admin</h2>
 <input id="eventName" placeholder="Event name">
 <button onclick="createEvent()">Create Event</button>
 
 <hr>
 
-<h2>Events</h2>
+<!-- GLOBAL QR -->
+<h2>Scan This QR To Join Events</h2>
+<canvas id="qr"></canvas>
+
+<hr>
+
+<!-- EVENT LOBBY -->
+<h2>Available Events</h2>
 <div id="events"></div>
 
 <hr>
 
-<h2>Join Event</h2>
-<input id="participantName" placeholder="Your name">
-<button onclick="joinEvent()">Join</button>
-
-<canvas id="qr"></canvas>
+<!-- PARTICIPANT JOIN -->
+<div id="joinBox" style="display:none;">
+  <h3 id="selectedEvent"></h3>
+  <input id="participantName" placeholder="Your name">
+  <button onclick="joinEvent()">Join Event</button>
+</div>
 
 <script type="module">
 
@@ -29,59 +43,75 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import QRCode from "https://cdn.jsdelivr.net/npm/qrcode/+esm";
 
 const supabase = createClient(
-  "https://pxtpsugbuunjzurdvzkc.supabase.co",
-  "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW"
+ "https://pxtpsugbuunjzurdvzkc.supabase.co",
+ "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW"
 );
 
-let currentEvent=null;
+let selectedEventId = null;
 
-window.createEvent = async()=>{
+// CREATE EVENT (ADMIN)
+window.createEvent = async () => {
 
- const name=document.getElementById("eventName").value;
+ const name = document.getElementById("eventName").value.trim();
+ if(!name) return alert("Enter event name");
 
- const {data,error}=await supabase.from("events").insert([{name}]).select();
+ const { error } = await supabase.from("events").insert([{ name }]);
 
- if(error){alert(error.message);return;}
+ if(error) return alert(error.message);
 
- currentEvent=data[0].id;
-
+ document.getElementById("eventName").value="";
  loadEvents();
- drawQR();
 };
 
+// LOAD EVENTS INTO LOBBY
 async function loadEvents(){
 
- const {data}=await supabase.from("events").select("*");
+ const { data } = await supabase.from("events").select("*").order("id");
 
- const box=document.getElementById("events");
+ const box = document.getElementById("events");
  box.innerHTML="";
 
  data.forEach(e=>{
-   box.innerHTML+=`<p>${e.name}</p>`;
-   currentEvent=e.id;
+   box.innerHTML += `
+     <button onclick="selectEvent(${e.id},'${e.name}')">
+       ${e.name}
+     </button><br><br>
+   `;
  });
 
 }
 
-window.joinEvent=async()=>{
+// SELECT EVENT
+window.selectEvent = (id,name)=>{
+ selectedEventId=id;
+ document.getElementById("joinBox").style.display="block";
+ document.getElementById("selectedEvent").innerText="Joining: "+name;
+};
 
- const name=document.getElementById("participantName").value;
+// JOIN EVENT
+window.joinEvent = async ()=>{
 
- const {error}=await supabase.from("participants").insert([
-  {name,event_id:currentEvent}
+ const name=document.getElementById("participantName").value.trim();
+ if(!name) return alert("Enter your name");
+
+ const { error } = await supabase.from("participants").insert([
+  { name, event_id:selectedEventId }
  ]);
 
  if(error) alert(error.message);
- else alert("Joined");
+ else alert("Joined Successfully!");
 
+ document.getElementById("participantName").value="";
 };
 
+// DRAW SINGLE GLOBAL QR
 async function drawQR(){
  await QRCode.toCanvas(document.getElementById("qr"),
-   window.location.href
+   window.location.origin
  );
 }
 
+drawQR();
 loadEvents();
 
 </script>
