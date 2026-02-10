@@ -2,39 +2,107 @@
 <html>
 <head>
 <title>Eventtrax</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.container{
+width:95%;
+max-width:900px;
+background:#111;
+border-radius:15px;
+padding:25px;
+box-shadow:0 0 40px rgba(0,0,0,.6);
+}
+
+h1{text-align:center;margin-bottom:20px}
+
+.section{
+background:#1b1b1b;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:10px;
+border:none;
+border-radius:5px;
+margin-top:8px;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:6px;
+background:#00bcd4;
+color:black;
+font-weight:bold;
+cursor:pointer;
+width:100%;
+}
+
+button:hover{opacity:.8}
+
+.eventBtn{
+background:#222;
+color:white;
+border:1px solid #00bcd4;
+margin-bottom:8px;
+}
+
+canvas{
+margin:auto;
+display:block;
+}
+
+.small{text-align:center;font-size:13px;opacity:.7}
+
+</style>
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>Eventtrax</h1>
 
-<hr>
-
-<!-- ADMIN SECTION -->
-<h2>Admin</h2>
-<input id="eventName" placeholder="Event name">
+<div class="section">
+<h3>Admin Create Event</h3>
+<input id="eventName" placeholder="Enter event name">
 <button onclick="createEvent()">Create Event</button>
+</div>
 
-<hr>
-
-<!-- GLOBAL QR -->
-<h2>Scan This QR To Join Events</h2>
+<div class="section">
+<h3>Scan QR to Join</h3>
 <canvas id="qr"></canvas>
+<p class="small">Participants scan this QR</p>
+</div>
 
-<hr>
-
-<!-- EVENT LOBBY -->
-<h2>Available Events</h2>
+<div class="section">
+<h3>Available Events</h3>
 <div id="events"></div>
+</div>
 
-<hr>
+<div class="section" id="joinBox" style="display:none">
+<h3 id="selectedEvent"></h3>
+<input id="participantName" placeholder="Your name">
+<button onclick="joinEvent()">Join Event</button>
+</div>
 
-<!-- PARTICIPANT JOIN -->
-<div id="joinBox" style="display:none;">
-  <h3 id="selectedEvent"></h3>
-  <input id="participantName" placeholder="Your name">
-  <button onclick="joinEvent()">Join Event</button>
 </div>
 
 <script type="module">
@@ -42,73 +110,61 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 import QRCode from "https://cdn.jsdelivr.net/npm/qrcode/+esm";
 
-const supabase = createClient(
- "https://pxtpsugbuunjzurdvzkc.supabase.co",
- "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW"
+const supabase=createClient(
+"https://pxtpsugbuunjzurdvzkc.supabase.co",
+"sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW"
 );
 
-let selectedEventId = null;
+let selectedEvent=null;
 
-// CREATE EVENT (ADMIN)
-window.createEvent = async () => {
+window.createEvent=async()=>{
+const name=document.getElementById("eventName").value.trim();
+if(!name)return alert("Enter event");
 
- const name = document.getElementById("eventName").value.trim();
- if(!name) return alert("Enter event name");
+const {error}=await supabase.from("events").insert([{name}]);
+if(error)return alert(error.message);
 
- const { error } = await supabase.from("events").insert([{ name }]);
-
- if(error) return alert(error.message);
-
- document.getElementById("eventName").value="";
- loadEvents();
+document.getElementById("eventName").value="";
+loadEvents();
 };
 
-// LOAD EVENTS INTO LOBBY
 async function loadEvents(){
+const {data}=await supabase.from("events").select("*").order("id");
 
- const { data } = await supabase.from("events").select("*").order("id");
+const box=document.getElementById("events");
+box.innerHTML="";
 
- const box = document.getElementById("events");
- box.innerHTML="";
-
- data.forEach(e=>{
-   box.innerHTML += `
-     <button onclick="selectEvent(${e.id},'${e.name}')">
-       ${e.name}
-     </button><br><br>
-   `;
- });
-
+data.forEach(e=>{
+box.innerHTML+=`
+<button class="eventBtn" onclick="selectEvent(${e.id},'${e.name}')">
+${e.name}
+</button>
+`;
+});
 }
 
-// SELECT EVENT
-window.selectEvent = (id,name)=>{
- selectedEventId=id;
- document.getElementById("joinBox").style.display="block";
- document.getElementById("selectedEvent").innerText="Joining: "+name;
+window.selectEvent=(id,name)=>{
+selectedEvent=id;
+document.getElementById("joinBox").style.display="block";
+document.getElementById("selectedEvent").innerText="Joining "+name;
 };
 
-// JOIN EVENT
-window.joinEvent = async ()=>{
+window.joinEvent=async()=>{
+const name=document.getElementById("participantName").value.trim();
+if(!name)return alert("Enter name");
 
- const name=document.getElementById("participantName").value.trim();
- if(!name) return alert("Enter your name");
+const {error}=await supabase.from("participants").insert([
+{name,event_id:selectedEvent}
+]);
 
- const { error } = await supabase.from("participants").insert([
-  { name, event_id:selectedEventId }
- ]);
+if(error)alert(error.message);
+else alert("Joined!");
 
- if(error) alert(error.message);
- else alert("Joined Successfully!");
-
- document.getElementById("participantName").value="";
+document.getElementById("participantName").value="";
 };
 
-// DRAW SINGLE GLOBAL QR
 async function drawQR(){
- await QRCode.toCanvas(document.getElementById("qr"),
-   window.location.origin
- );
+await QRCode.toCanvas(document.getElementById("qr"),window.location.origin);
 }
 
 drawQR();
