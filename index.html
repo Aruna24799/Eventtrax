@@ -1,53 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Eventtrax</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      background: #0f172a;
+      font-family: Arial;
+      color: white;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    #events {
+      margin-top: 30px;
+      background: #020617;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    #events p {
+      padding: 10px;
+      background: #020617;
+      border-bottom: 1px solid #1e293b;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginBox" class="login">
-  <h1>Eventtrax Admin</h1>
-  <input id="adminPass" type="password" placeholder="Admin password">
-  <button onclick="login()">Login</button>
-</div>
+<div class="container">
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="app hidden">
+  <h1>Eventtrax Admin Dashboard</h1>
 
-  <aside class="sidebar">
-    <h2 class="logo">Eventtrax</h2>
-    <nav>
-      <a class="active">Dashboard</a>
-      <a>Events</a>
-      <a>Participants</a>
-    </nav>
-    <button class="logout" onclick="logout()">Logout</button>
-  </aside>
+  <input id="eventName" placeholder="Enter Event Name">
 
-  <main class="main">
-    <header class="header">
-      <h1>Admin Dashboard</h1>
-      <p>Manage your events</p>
-    </header>
+  <button onclick="createEvent()">Create Event</button>
 
-    <section class="panel">
-      <h2>Create Event</h2>
-      <input id="eventName" placeholder="Event name">
-      <button onclick="createEvent()">Create Event</button>
-    </section>
-
-    <section class="panel">
-      <h2>Event Rooms</h2>
-      <div id="events"></div>
-    </section>
-  </main>
+  <div id="events"></div>
 
 </div>
 
 <script type="module" src="./script.js"></script>
+
 </body>
 </html>
