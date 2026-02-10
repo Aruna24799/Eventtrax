@@ -1,60 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Eventtrax</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="app">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <h2 class="logo">Eventtrax</h2>
-      <nav>
-        <a class="active">Dashboard</a>
-        <a>Events</a>
-        <a>Participants</a>
-        <a>Analytics</a>
-      </nav>
-    </aside>
+<!-- LOGIN -->
+<div id="loginBox" class="login">
+  <h1>Eventtrax Admin</h1>
+  <input id="adminPass" type="password" placeholder="Admin password">
+  <button onclick="login()">Login</button>
+</div>
 
-    <!-- Main Content -->
-    <main class="main">
-      <header class="header">
-        <h1>Admin Dashboard</h1>
-        <p>Manage your events and participants</p>
-      </header>
+<!-- DASHBOARD -->
+<div id="dashboard" class="app hidden">
 
-      <!-- Stats -->
-      <section class="stats">
-        <div class="card">
-          <h3>Total Events</h3>
-          <span id="eventCount">0</span>
-        </div>
-        <div class="card">
-          <h3>Total Participants</h3>
-          <span id="participantCount">0</span>
-        </div>
-      </section>
+  <aside class="sidebar">
+    <h2 class="logo">Eventtrax</h2>
+    <nav>
+      <a class="active">Dashboard</a>
+      <a>Events</a>
+      <a>Participants</a>
+    </nav>
+    <button class="logout" onclick="logout()">Logout</button>
+  </aside>
 
-      <!-- Create Event -->
-      <section class="panel">
-        <h2>Create Event</h2>
-        <input id="eventName" placeholder="Event name" />
-        <button onclick="createEvent()">Create Event</button>
-      </section>
+  <main class="main">
+    <header class="header">
+      <h1>Admin Dashboard</h1>
+      <p>Manage your events</p>
+    </header>
 
-      <!-- Events List -->
-      <section class="panel">
-        <h2>Event Rooms</h2>
-        <div id="events" class="list"></div>
-      </section>
+    <section class="panel">
+      <h2>Create Event</h2>
+      <input id="eventName" placeholder="Event name">
+      <button onclick="createEvent()">Create Event</button>
+    </section>
 
-    </main>
-  </div>
+    <section class="panel">
+      <h2>Event Rooms</h2>
+      <div id="events"></div>
+    </section>
+  </main>
 
-  <script type="module" src="./script.js"></script>
+</div>
+
+<script type="module" src="./script.js"></script>
 </body>
 </html>
