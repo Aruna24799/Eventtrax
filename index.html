@@ -1,106 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Eventtrax</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Style -->
-  <link rel="stylesheet" href="./style.css" />
+<meta charset="UTF-8" />
+<title>Eventtrax</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="./style.css" />
 </head>
+
 <body>
 
-  <!-- ================= LOGIN SECTION ================= -->
-  <div id="loginBox">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPassword" placeholder="Enter admin password" />
-    <button onclick="login()">Login</button>
-  </div>
+<!-- ADMIN LOGIN -->
+<div id="loginBox">
+  <h2>Admin Login</h2>
+  <input id="adminPassword" type="password" placeholder="Admin password" />
+  <button onclick="login()">Login</button>
+</div>
 
-  <!-- ================= ADMIN DASHBOARD ================= -->
-  <div id="adminDashboard" style="display:none;">
-    <h1>Eventtrax Admin Dashboard</h1>
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard" style="display:none;">
+  <h1>Eventtrax Admin Dashboard</h1>
 
-    <div class="create-event">
-      <input id="eventName" placeholder="Enter event name" />
-      <button onclick="createEvent()">Create Event</button>
-    </div>
+  <input id="eventName" placeholder="Enter event name" />
+  <button onclick="createEvent()">Create Event</button>
 
-    <h2>Event Rooms</h2>
-    <div id="events"></div>
-  </div>
+  <h2>Event Rooms</h2>
+  <div id="events"></div>
+</div>
 
-  <!-- ================= SCRIPT ================= -->
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+<!-- PARTICIPANT JOIN -->
+<div id="joinBox" style="display:none;">
+  <h2>Join Event</h2>
+  <input id="participantName" placeholder="Your Name" />
+  <button onclick="joinEvent()">Join</button>
+</div>
 
-    // Supabase config
-    const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
+<!-- QR MODAL -->
+<div id="qrModal" style="display:none;">
+  <h3>Event QR</h3>
+  <canvas id="qrCanvas"></canvas><br><br>
+  <button onclick="closeQR()">Close</button>
+</div>
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+import QRCode from "https://cdn.jsdelivr.net/npm/qrcode/+esm";
 
-    // Admin password (simple demo logic)
-    const ADMIN_PASSWORD = "admin123";
+const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
-    // Login
-    window.login = () => {
-      const pass = document.getElementById("adminPassword").value;
-      if (pass === ADMIN_PASSWORD) {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("adminDashboard").style.display = "block";
-        loadEvents();
-      } else {
-        alert("Wrong password");
-      }
-    };
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const ADMIN_PASSWORD = "admin123";
 
-    // Create Event
-    window.createEvent = async () => {
-      const input = document.getElementById("eventName");
-      const name = input.value.trim();
+let currentEventId = null;
 
-      if (!name) {
-        alert("Enter event name");
-        return;
-      }
+// ADMIN LOGIN
+window.login = () => {
+  const pass = document.getElementById("adminPassword").value;
+  if (pass === ADMIN_PASSWORD) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("adminDashboard").style.display = "block";
+    loadEvents();
+  } else alert("Wrong password");
+};
 
-      const { error } = await supabase
-        .from("events")
-        .insert([{ name }]);
+// CREATE EVENT
+window.createEvent = async () => {
+  const name = document.getElementById("eventName").value.trim();
+  if (!name) return alert("Enter event name");
 
-      if (error) {
-        alert("Error: " + error.message);
-        return;
-      }
+  const { error } = await supabase.from("events").insert([{ name }]);
+  if (error) return alert(error.message);
 
-      input.value = "";
-      loadEvents();
-    };
+  document.getElementById("eventName").value = "";
+  loadEvents();
+};
 
-    // Load Events
-    async function loadEvents() {
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .order("id", { ascending: false });
+// LOAD EVENTS
+async function loadEvents() {
+  const { data } = await supabase.from("events").select("*").order("id",{ascending:false});
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+  const box = document.getElementById("events");
+  box.innerHTML = "";
 
-      const box = document.getElementById("events");
-      box.innerHTML = "";
+  data.forEach(e=>{
+    box.innerHTML += `
+      <div class="event-item">
+        <b>${e.name}</b><br>
+        <button onclick="showQR(${e.id})">Show QR</button>
+      </div>
+    `;
+  });
+}
 
-      data.forEach(event => {
-        const div = document.createElement("div");
-        div.className = "event-item";
-        div.textContent = event.name;
-        box.appendChild(div);
-      });
-    }
-  </script>
+// SHOW QR
+window.showQR = async (id)=>{
+  const url = window.location.origin + "?event=" + id;
+  await QRCode.toCanvas(document.getElementById("qrCanvas"),url);
+  document.getElementById("qrModal").style.display="block";
+};
+
+window.closeQR=()=>{
+  document.getElementById("qrModal").style.display="none";
+};
+
+// AUTO JOIN VIA QR
+const params = new URLSearchParams(window.location.search);
+if(params.get("event")){
+  currentEventId=params.get("event");
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("adminDashboard").style.display="none";
+  document.getElementById("joinBox").style.display="block";
+}
+
+// JOIN EVENT
+window.joinEvent=async()=>{
+  const name=document.getElementById("participantName").value.trim();
+  if(!name)return alert("Enter name");
+
+  const {error}=await supabase.from("participants").insert([
+    {name,event_id:currentEventId}
+  ]);
+
+  if(error)return alert(error.message);
+
+  alert("Joined Successfully!");
+  document.getElementById("participantName").value="";
+};
+
+loadEvents();
+</script>
 
 </body>
 </html>
