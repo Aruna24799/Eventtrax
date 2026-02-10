@@ -1,133 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
 <title>Eventtrax</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
 
-<!-- ADMIN LOGIN -->
-<div id="loginBox">
-  <h2>Admin Login</h2>
-  <input id="adminPassword" type="password" placeholder="Admin password" />
-  <button onclick="login()">Login</button>
-</div>
+<h2>Admin</h2>
+<input id="eventName" placeholder="Event name">
+<button onclick="createEvent()">Create Event</button>
 
-<!-- ADMIN DASHBOARD -->
-<div id="adminDashboard" style="display:none;">
-  <h1>Eventtrax Admin Dashboard</h1>
+<hr>
 
-  <input id="eventName" placeholder="Enter event name" />
-  <button onclick="createEvent()">Create Event</button>
+<h2>Events</h2>
+<div id="events"></div>
 
-  <h2>Event Rooms</h2>
-  <div id="events"></div>
-</div>
+<hr>
 
-<!-- PARTICIPANT JOIN -->
-<div id="joinBox" style="display:none;">
-  <h2>Join Event</h2>
-  <input id="participantName" placeholder="Your Name" />
-  <button onclick="joinEvent()">Join</button>
-</div>
+<h2>Join Event</h2>
+<input id="participantName" placeholder="Your name">
+<button onclick="joinEvent()">Join</button>
 
-<!-- QR MODAL -->
-<div id="qrModal" style="display:none;">
-  <h3>Event QR</h3>
-  <canvas id="qrCanvas"></canvas><br><br>
-  <button onclick="closeQR()">Close</button>
-</div>
+<canvas id="qr"></canvas>
 
 <script type="module">
+
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 import QRCode from "https://cdn.jsdelivr.net/npm/qrcode/+esm";
 
-const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
+const supabase = createClient(
+  "https://pxtpsugbuunjzurdvzkc.supabase.co",
+  "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW"
+);
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-const ADMIN_PASSWORD = "admin123";
+let currentEvent=null;
 
-let currentEventId = null;
+window.createEvent = async()=>{
 
-// ADMIN LOGIN
-window.login = () => {
-  const pass = document.getElementById("adminPassword").value;
-  if (pass === ADMIN_PASSWORD) {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("adminDashboard").style.display = "block";
-    loadEvents();
-  } else alert("Wrong password");
+ const name=document.getElementById("eventName").value;
+
+ const {data,error}=await supabase.from("events").insert([{name}]).select();
+
+ if(error){alert(error.message);return;}
+
+ currentEvent=data[0].id;
+
+ loadEvents();
+ drawQR();
 };
 
-// CREATE EVENT
-window.createEvent = async () => {
-  const name = document.getElementById("eventName").value.trim();
-  if (!name) return alert("Enter event name");
+async function loadEvents(){
 
-  const { error } = await supabase.from("events").insert([{ name }]);
-  if (error) return alert(error.message);
+ const {data}=await supabase.from("events").select("*");
 
-  document.getElementById("eventName").value = "";
-  loadEvents();
-};
+ const box=document.getElementById("events");
+ box.innerHTML="";
 
-// LOAD EVENTS
-async function loadEvents() {
-  const { data } = await supabase.from("events").select("*").order("id",{ascending:false});
+ data.forEach(e=>{
+   box.innerHTML+=`<p>${e.name}</p>`;
+   currentEvent=e.id;
+ });
 
-  const box = document.getElementById("events");
-  box.innerHTML = "";
-
-  data.forEach(e=>{
-    box.innerHTML += `
-      <div class="event-item">
-        <b>${e.name}</b><br>
-        <button onclick="showQR(${e.id})">Show QR</button>
-      </div>
-    `;
-  });
 }
 
-// SHOW QR
-window.showQR = async (id)=>{
-  const url = window.location.origin + "?event=" + id;
-  await QRCode.toCanvas(document.getElementById("qrCanvas"),url);
-  document.getElementById("qrModal").style.display="block";
-};
-
-window.closeQR=()=>{
-  document.getElementById("qrModal").style.display="none";
-};
-
-// AUTO JOIN VIA QR
-const params = new URLSearchParams(window.location.search);
-if(params.get("event")){
-  currentEventId=params.get("event");
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("adminDashboard").style.display="none";
-  document.getElementById("joinBox").style.display="block";
-}
-
-// JOIN EVENT
 window.joinEvent=async()=>{
-  const name=document.getElementById("participantName").value.trim();
-  if(!name)return alert("Enter name");
 
-  const {error}=await supabase.from("participants").insert([
-    {name,event_id:currentEventId}
-  ]);
+ const name=document.getElementById("participantName").value;
 
-  if(error)return alert(error.message);
+ const {error}=await supabase.from("participants").insert([
+  {name,event_id:currentEvent}
+ ]);
 
-  alert("Joined Successfully!");
-  document.getElementById("participantName").value="";
+ if(error) alert(error.message);
+ else alert("Joined");
+
 };
+
+async function drawQR(){
+ await QRCode.toCanvas(document.getElementById("qr"),
+   window.location.href
+ );
+}
 
 loadEvents();
+
 </script>
 
 </body>
