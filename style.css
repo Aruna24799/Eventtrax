@@ -122,3 +122,26 @@ button:hover {
   border-radius: 8px;
   margin-bottom: 8px;
 }
+.hidden {
+  display: none;
+}
+
+.login {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #020617, #0f172a);
+}
+
+.login input {
+  width: 260px;
+  margin-bottom: 12px;
+}
+
+.logout {
+  margin-top: auto;
+  background: #ef4444;
+}
+
