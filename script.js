@@ -7,7 +7,7 @@ const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // 🔐 ADMIN PASSWORD (CHANGE IF YOU WANT)
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_PASSWORD = "Arunaram@2025";
 
 // LOGIN CHECK
 if (localStorage.getItem("admin") === "true") {
@@ -57,3 +57,4 @@ async function loadEvents() {
     box.innerHTML += `<p>${e.name}</p>`;
   });
 }
+
