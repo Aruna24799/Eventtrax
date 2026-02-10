@@ -20,7 +20,7 @@ window.createEvent = async () => {
     .insert([{ name }]);
 
   if (error) {
-    alert("Insert error: " + error.message);
+    alert(error.message);
     console.log(error);
     return;
   }
