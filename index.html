@@ -1,54 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>Eventtrax</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <div class="app">
 
-<div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">Eventtrax</h2>
+      <nav>
+        <a class="active">Dashboard</a>
+        <a>Events</a>
+        <a>Participants</a>
+        <a>Analytics</a>
+      </nav>
+    </aside>
 
-<h1>Eventtrax Admin</h1>
+    <!-- Main Content -->
+    <main class="main">
+      <header class="header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage your events and participants</p>
+      </header>
 
-<section class="card">
+      <!-- Stats -->
+      <section class="stats">
+        <div class="card">
+          <h3>Total Events</h3>
+          <span id="eventCount">0</span>
+        </div>
+        <div class="card">
+          <h3>Total Participants</h3>
+          <span id="participantCount">0</span>
+        </div>
+      </section>
 
-<h3>Create Event</h3>
-<input id="eventName" placeholder="Event Name">
-<button onclick="createNewEvent()">Create Event</button>
+      <!-- Create Event -->
+      <section class="panel">
+        <h2>Create Event</h2>
+        <input id="eventName" placeholder="Event name" />
+        <button onclick="createEvent()">Create Event</button>
+      </section>
 
-</section>
+      <!-- Events List -->
+      <section class="panel">
+        <h2>Event Rooms</h2>
+        <div id="events" class="list"></div>
+      </section>
 
-<section class="card">
+    </main>
+  </div>
 
-<h3>Join Event</h3>
-<input id="participantName" placeholder="Your Name">
-<input id="eventId" placeholder="Event ID">
-<button onclick="joinEvent()">Join Event</button>
-
-</section>
-
-<section class="card">
-
-<h3>Admin Dashboard</h3>
-
-<select id="adminEventSelect"></select>
-<button onclick="loadAdminParticipants()">View Participants</button>
-
-<div id="adminParticipants"></div>
-
-</section>
-
-<section class="card">
-
-<h3>All Events</h3>
-<div id="events"></div>
-
-</section>
-
-</div>
-
-<script type="module" src="script.js"></script>
-
+  <script type="module" src="./script.js"></script>
 </body>
-</html> 
+</html>
