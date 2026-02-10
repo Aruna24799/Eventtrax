@@ -1,80 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>Eventtrax</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    body {
-      margin: 0;
-      background: #0f172a;
-      font-family: Arial;
-      color: white;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 40px;
-    }
-
-    h1 {
-      text-align: center;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      border: none;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      background: #3b82f6;
-      color: white;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      background: #2563eb;
-    }
-
-    #events {
-      margin-top: 30px;
-      background: #020617;
-      padding: 20px;
-      border-radius: 10px;
-    }
-
-    #events p {
-      padding: 10px;
-      background: #020617;
-      border-bottom: 1px solid #1e293b;
-    }
-  </style>
+  <!-- Style -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
-
 <body>
 
-<div class="container">
+  <!-- ================= LOGIN SECTION ================= -->
+  <div id="loginBox">
+    <h2>Admin Login</h2>
+    <input type="password" id="adminPassword" placeholder="Enter admin password" />
+    <button onclick="login()">Login</button>
+  </div>
 
-  <h1>Eventtrax Admin Dashboard</h1>
+  <!-- ================= ADMIN DASHBOARD ================= -->
+  <div id="adminDashboard" style="display:none;">
+    <h1>Eventtrax Admin Dashboard</h1>
 
-  <input id="eventName" placeholder="Enter Event Name">
+    <div class="create-event">
+      <input id="eventName" placeholder="Enter event name" />
+      <button onclick="createEvent()">Create Event</button>
+    </div>
 
-  <button onclick="createEvent()">Create Event</button>
+    <h2>Event Rooms</h2>
+    <div id="events"></div>
+  </div>
 
-  <div id="events"></div>
+  <!-- ================= SCRIPT ================= -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-</div>
+    // Supabase config
+    const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
-<script type="module" src="./script.js"></script>
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Admin password (simple demo logic)
+    const ADMIN_PASSWORD = "admin123";
+
+    // Login
+    window.login = () => {
+      const pass = document.getElementById("adminPassword").value;
+      if (pass === ADMIN_PASSWORD) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("adminDashboard").style.display = "block";
+        loadEvents();
+      } else {
+        alert("Wrong password");
+      }
+    };
+
+    // Create Event
+    window.createEvent = async () => {
+      const input = document.getElementById("eventName");
+      const name = input.value.trim();
+
+      if (!name) {
+        alert("Enter event name");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("events")
+        .insert([{ name }]);
+
+      if (error) {
+        alert("Error: " + error.message);
+        return;
+      }
+
+      input.value = "";
+      loadEvents();
+    };
+
+    // Load Events
+    async function loadEvents() {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .order("id", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      const box = document.getElementById("events");
+      box.innerHTML = "";
+
+      data.forEach(event => {
+        const div = document.createElement("div");
+        div.className = "event-item";
+        div.textContent = event.name;
+        box.appendChild(div);
+      });
+    }
+  </script>
 
 </body>
 </html>
