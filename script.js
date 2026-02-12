@@ -1,7 +1,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-const supabaseUrl = "YOUR_SUPABASE_URL";
-const supabaseKey = "YOUR_ANON_KEY";
+const supabaseUrl = "https://pxtpsugbuunjzurdvzkc.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -53,3 +53,4 @@ await supabase.from("participants").insert([{name,event_id}]);
 
 alert("Joined Successfully");
 };
+
