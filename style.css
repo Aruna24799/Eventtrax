@@ -1,92 +1,58 @@
-*{
-box-sizing:border-box;
-}
-
 body{
 margin:0;
-font-family:system-ui,Arial;
 background:#0b1220;
+font-family:Arial;
 color:white;
-}
-
-.container{
-max-width:1000px;
-margin:auto;
-padding:40px 20px;
-}
-
-.card{
-background:#121a2b;
-border-radius:12px;
-padding:20px;
-margin-bottom:20px;
-box-shadow:0 10px 30px rgba(0,0,0,.5);
-}
-
-h1,h2,h3{
-margin-top:0;
+text-align:center;
 }
 
 input{
-width:100%;
 padding:12px;
+width:250px;
+margin:10px;
 border-radius:6px;
 border:none;
-margin-top:10px;
-background:#1c2640;
-color:white;
 }
 
 button{
-margin-top:12px;
-padding:12px;
+padding:12px 25px;
+background:#2563eb;
+color:white;
 border:none;
 border-radius:6px;
-background:#38bdf8;
-color:black;
-font-weight:bold;
 cursor:pointer;
+margin:10px;
 }
 
 button:hover{
-opacity:.85;
+background:#1d4ed8;
 }
 
-.event-card{
-border:1px solid #38bdf8;
-border-radius:8px;
-padding:12px;
-margin-bottom:10px;
+.hidden{
+display:none;
+}
+
+#events div{
+background:#111827;
+padding:10px;
+margin:10px auto;
+width:300px;
+border-radius:6px;
 cursor:pointer;
 }
 
-.event-card:hover{
-background:#1c2640;
+#events div:hover{
+background:#1f2937;
 }
 
-.center{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+#qr{
+margin-top:20px;
 }
 
-.role-card{
-background:#121a2b;
-padding:40px;
-border-radius:15px;
-width:280px;
-text-align:center;
+#role{
+margin-top:120px;
 }
 
-.small{
-opacity:.7;
-font-size:13px;
-text-align:center;
-}
-
-.qr{
-display:flex;
-justify-content:center;
-margin-top:10px;
+#admin,#participant{
+margin-top:50px;
 }
