@@ -1,84 +1,57 @@
-const SUPABASE_URL="https://pxtpsugbuunjzurdvzkc.supabase.co";
-const SUPABASE_KEY="sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
+const events=[];
 
-import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm").then(m=>{
+function showAdmin(){
+document.getElementById("role-screen").style.display="none";
+document.getElementById("admin-screen").style.display="block";
 
-const supabase=m.createClient(SUPABASE_URL,SUPABASE_KEY);
-
-window.showAdmin=()=>{
-role.classList.add("hidden");
-admin.classList.remove("hidden");
-loadEvents();
+generateQR();
 }
 
-window.showParticipant=()=>{
-role.classList.add("hidden");
-participant.classList.remove("hidden");
-loadPublic();
+function showParticipant(){
+document.getElementById("role-screen").style.display="none";
+document.getElementById("participant-screen").style.display="block";
+renderEvents();
 }
 
-window.back=()=>{
-location.reload();
+function createEvent(){
+let name=document.getElementById("eventName").value;
+if(!name)return alert("Enter event");
+
+events.push(name);
+document.getElementById("eventName").value="";
+renderAdmin();
 }
 
-window.createEvent=async()=>{
-let name=eventName.value;
-if(!name)return alert("Enter name");
-
-await supabase.from("events").insert([{name}]);
-
-eventName.value="";
-loadEvents();
+function renderAdmin(){
+let html="";
+events.forEach(e=>{
+html+=`<div class="event">${e}</div>`;
+});
+document.getElementById("events").innerHTML=html;
 }
 
-async function loadEvents(){
+function renderEvents(){
+let html="";
+events.forEach(e=>{
+html+=`<div class="event">${e}</div>`;
+});
+document.getElementById("eventList").innerHTML=html;
+}
 
-let {data}=await supabase.from("events").select("*");
+function joinEvent(){
+let n=document.getElementById("pname").value;
+let e=document.getElementById("pemail").value;
 
-events.innerHTML="";
+if(!n||!e)return alert("Fill fields");
 
-data.forEach(e=>{
-let d=document.createElement("div");
-d.innerText=e.name;
-d.onclick=()=>makeQR(e.id);
-events.appendChild(d);
+alert("Joined successfully!");
+}
+
+function generateQR(){
+document.getElementById("qr").innerHTML="";
+new QRCode(document.getElementById("qr"),{
+text:window.location.href,
+width:180,
+height:180
 });
 }
-
-function makeQR(id){
-qr.innerHTML="";
-new QRCode(qr,{
-text:location.href+"?event="+id,
-width:200,
-height:200
-});
-}
-
-async function loadPublic(){
-
-let {data}=await supabase.from("events").select("*");
-
-eventList.innerHTML="";
-
-data.forEach(e=>{
-let b=document.createElement("button");
-b.innerText=e.name;
-b.onclick=()=>window.current=e.id;
-eventList.appendChild(b);
-});
-}
-
-window.joinEvent=async()=>{
-if(!window.current)return alert("Select event");
-
-let name=pname.value;
-
-if(!name)return alert("Enter name");
-
-await supabase.from("participants").insert([{name,event_id:window.current}]);
-
-alert("Joined!");
-pname.value="";
-}
-
-});
