@@ -1,26 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>EventraX</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventraX</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./style.css">
 
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 
-<body class="landing">
+<body>
 
-<div class="landing-card">
+<div id="role-screen" class="center-screen">
 
+<div class="card small">
 <h1>EventraX</h1>
-<p>Unified Event Experience Platform</p>
 
-<button onclick="location.href='admin.html'">Admin Dashboard</button>
-<button class="secondary" onclick="location.href='participant.html'">Join Event</button>
+<button onclick="showAdmin()">Admin</button>
+<button onclick="showParticipant()">Participant</button>
 
 </div>
+</div>
 
+<!-- ADMIN -->
+
+<div id="admin-screen" class="hidden">
+
+<header>Admin Dashboard</header>
+
+<div class="container">
+
+<input id="eventName" placeholder="Event name">
+<button onclick="createEvent()">Create Event</button>
+
+<h3>Events</h3>
+<div id="events"></div>
+
+<h3>Global QR</h3>
+<div id="qr"></div>
+
+</div>
+</div>
+
+<!-- PARTICIPANT -->
+
+<div id="participant-screen" class="hidden">
+
+<header>Join Event</header>
+
+<div class="container">
+
+<input id="pname" placeholder="Your name">
+<input id="pemail" placeholder="Email">
+
+<div id="eventList"></div>
+
+<button onclick="joinEvent()">Join</button>
+
+</div>
+</div>
+
+<script src="./script.js"></script>
 </body>
 </html>
