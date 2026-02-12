@@ -1,56 +1,92 @@
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-// 🔹 Supabase config
-const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// 🔹 Create Event (Admin)
-window.createEvent = async () => {
-  const input = document.getElementById("eventName");
-  const name = input.value.trim();
-
-  if (!name) {
-    alert("Enter event name");
-    return;
-  }
-
-  const { error } = await supabase
-    .from("events")
-    .insert([{ name }]);
-
-  if (error) {
-    alert("Error: " + error.message);
-    return;
-  }
-
-  input.value = "";
-  loadEvents();
-};
-
-// 🔹 Load Events (Event Rooms)
-async function loadEvents() {
-  const { data, error } = await supabase
-    .from("events")
-    .select("*")
-    .order("id", { ascending: false });
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  const box = document.getElementById("events");
-  box.innerHTML = "";
-
-  data.forEach(event => {
-    const div = document.createElement("div");
-    div.className = "event-item";
-    div.textContent = event.name;
-    box.appendChild(div);
-  });
+*{
+box-sizing:border-box;
 }
 
-// Load on page start
-loadEvents();
+body{
+margin:0;
+font-family:system-ui,Arial;
+background:#0b1220;
+color:white;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px 20px;
+}
+
+.card{
+background:#121a2b;
+border-radius:12px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+
+h1,h2,h3{
+margin-top:0;
+}
+
+input{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:none;
+margin-top:10px;
+background:#1c2640;
+color:white;
+}
+
+button{
+margin-top:12px;
+padding:12px;
+border:none;
+border-radius:6px;
+background:#38bdf8;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.85;
+}
+
+.event-card{
+border:1px solid #38bdf8;
+border-radius:8px;
+padding:12px;
+margin-bottom:10px;
+cursor:pointer;
+}
+
+.event-card:hover{
+background:#1c2640;
+}
+
+.center{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.role-card{
+background:#121a2b;
+padding:40px;
+border-radius:15px;
+width:280px;
+text-align:center;
+}
+
+.small{
+opacity:.7;
+font-size:13px;
+text-align:center;
+}
+
+.qr{
+display:flex;
+justify-content:center;
+margin-top:10px;
+}
