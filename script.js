@@ -1,92 +1,84 @@
-*{
-box-sizing:border-box;
+const SUPABASE_URL="https://pxtpsugbuunjzurdvzkc.supabase.co";
+const SUPABASE_KEY="sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
+
+import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm").then(m=>{
+
+const supabase=m.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+window.showAdmin=()=>{
+role.classList.add("hidden");
+admin.classList.remove("hidden");
+loadEvents();
 }
 
-body{
-margin:0;
-font-family:system-ui,Arial;
-background:#0b1220;
-color:white;
+window.showParticipant=()=>{
+role.classList.add("hidden");
+participant.classList.remove("hidden");
+loadPublic();
 }
 
-.container{
-max-width:1000px;
-margin:auto;
-padding:40px 20px;
+window.back=()=>{
+location.reload();
 }
 
-.card{
-background:#121a2b;
-border-radius:12px;
-padding:20px;
-margin-bottom:20px;
-box-shadow:0 10px 30px rgba(0,0,0,.5);
+window.createEvent=async()=>{
+let name=eventName.value;
+if(!name)return alert("Enter name");
+
+await supabase.from("events").insert([{name}]);
+
+eventName.value="";
+loadEvents();
 }
 
-h1,h2,h3{
-margin-top:0;
+async function loadEvents(){
+
+let {data}=await supabase.from("events").select("*");
+
+events.innerHTML="";
+
+data.forEach(e=>{
+let d=document.createElement("div");
+d.innerText=e.name;
+d.onclick=()=>makeQR(e.id);
+events.appendChild(d);
+});
 }
 
-input{
-width:100%;
-padding:12px;
-border-radius:6px;
-border:none;
-margin-top:10px;
-background:#1c2640;
-color:white;
+function makeQR(id){
+qr.innerHTML="";
+new QRCode(qr,{
+text:location.href+"?event="+id,
+width:200,
+height:200
+});
 }
 
-button{
-margin-top:12px;
-padding:12px;
-border:none;
-border-radius:6px;
-background:#38bdf8;
-color:black;
-font-weight:bold;
-cursor:pointer;
+async function loadPublic(){
+
+let {data}=await supabase.from("events").select("*");
+
+eventList.innerHTML="";
+
+data.forEach(e=>{
+let b=document.createElement("button");
+b.innerText=e.name;
+b.onclick=()=>window.current=e.id;
+eventList.appendChild(b);
+});
 }
 
-button:hover{
-opacity:.85;
+window.joinEvent=async()=>{
+if(!window.current)return alert("Select event");
+
+let name=pname.value;
+
+if(!name)return alert("Enter name");
+
+await supabase.from("participants").insert([{name,event_id:window.current}]);
+
+alert("Joined!");
+pname.value="";
 }
 
-.event-card{
-border:1px solid #38bdf8;
-border-radius:8px;
-padding:12px;
-margin-bottom:10px;
-cursor:pointer;
-}
-
-.event-card:hover{
-background:#1c2640;
-}
-
-.center{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.role-card{
-background:#121a2b;
-padding:40px;
-border-radius:15px;
-width:280px;
-text-align:center;
-}
-
-.small{
-opacity:.7;
-font-size:13px;
-text-align:center;
-}
-
-.qr{
-display:flex;
-justify-content:center;
-margin-top:10px;
-}
+});
