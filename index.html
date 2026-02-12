@@ -3,59 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>EventraX</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./style.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 </head>
 
-<body>
+<body class="landing">
 
-<div id="role">
+<div class="landing-card">
 
 <h1>EventraX</h1>
+<p>Unified Event Experience Platform</p>
 
-<button onclick="showAdmin()">Admin</button>
-<button onclick="showParticipant()">Participant</button>
-
-</div>
-
-<!-- ADMIN -->
-
-<div id="admin" class="hidden">
-
-<h2>Admin Dashboard</h2>
-
-<input id="eventName" placeholder="Event name">
-<button onclick="createEvent()">Create Event</button>
-
-<h3>Events</h3>
-<div id="events"></div>
-
-<div id="qr"></div>
-
-<button onclick="back()">Back</button>
+<button onclick="location.href='admin.html'">Admin Dashboard</button>
+<button class="secondary" onclick="location.href='participant.html'">Join Event</button>
 
 </div>
-
-<!-- PARTICIPANT -->
-
-<div id="participant" class="hidden">
-
-<h2>Join Event</h2>
-
-<div id="eventList"></div>
-
-<input id="pname" placeholder="Your name">
-
-<button onclick="joinEvent()">Join</button>
-
-<button onclick="back()">Back</button>
-
-</div>
-
-<script src="./script.js"></script>
 
 </body>
 </html>
