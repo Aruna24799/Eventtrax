@@ -1,50 +1,60 @@
 body{
 margin:0;
-font-family:system-ui;
-background:linear-gradient(135deg,#050b16,#0a1f33);
+font-family:'Segoe UI',system-ui;
+background:linear-gradient(145deg,#0f172a,#020617);
 color:white;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 height:100vh;
 }
 
-.center-card{
-background:#0e2238;
-padding:30px;
-border-radius:12px;
-width:320px;
+.card{
+background:#111c2e;
+padding:40px;
+border-radius:16px;
+width:380px;
+box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+h1,h2{
+margin-top:0;
 text-align:center;
-box-shadow:0 0 40px rgba(0,0,0,.5);
 }
 
 button{
-background:#1e90ff;
+background:linear-gradient(135deg,#2563eb,#1e40af);
 border:none;
 padding:12px;
 width:100%;
-margin-top:10px;
-border-radius:6px;
+margin-top:12px;
+border-radius:8px;
 color:white;
+font-weight:600;
 cursor:pointer;
-font-weight:bold;
+transition:0.2s;
 }
 
-button:hover{background:#0f7ae5;}
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 20px rgba(37,99,235,.4);
+}
 
 input,select{
 width:100%;
-padding:10px;
-margin-top:10px;
-border-radius:6px;
+padding:12px;
+margin-top:12px;
+border-radius:8px;
 border:none;
+background:#0b1220;
+color:white;
 }
 
 .hidden{display:none;}
 
-#eventList div{
-background:#122b48;
-padding:8px;
-margin-top:5px;
+.event-box{
+background:#0b1220;
+padding:10px;
+margin-top:8px;
 border-radius:6px;
 }
