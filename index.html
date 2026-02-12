@@ -1,35 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>EventraX</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 
 <body>
 
-<div id="home">
+<div id="rolePage" class="center-card">
 <h1>EventraX</h1>
 <button onclick="showAdmin()">Admin</button>
 <button onclick="showParticipant()">Participant</button>
 </div>
 
-<div id="admin" class="hidden">
-<h2>Create Event</h2>
+<!-- ADMIN -->
+<div id="adminPage" class="hidden center-card">
+<h2>Admin Dashboard</h2>
+
 <input id="eventName" placeholder="Event name">
-<button onclick="createEvent()">Create</button>
-<div id="events"></div>
+<button onclick="createEvent()">Create Event</button>
+
+<h3>Events</h3>
+<div id="eventList"></div>
+
 <button onclick="goHome()">Back</button>
 </div>
 
-<div id="participant" class="hidden">
+<!-- PARTICIPANT -->
+<div id="participantPage" class="hidden center-card">
+
 <h2>Join Event</h2>
+
+<div id="qr"></div>
+
 <select id="eventSelect"></select>
+
 <input id="participantName" placeholder="Your name">
 <button onclick="joinEvent()">Join</button>
+
 <button onclick="goHome()">Back</button>
+
 </div>
 
-<script type="module" src="script.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
