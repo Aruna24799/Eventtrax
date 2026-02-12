@@ -1,68 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EventraX</title>
-
-<link rel="stylesheet" href="./style.css">
-
-<script type="module" src="script.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="role-screen" class="center-screen">
-
-<div class="card small">
+<div id="home">
 <h1>EventraX</h1>
-
 <button onclick="showAdmin()">Admin</button>
 <button onclick="showParticipant()">Participant</button>
-
-</div>
 </div>
 
-<!-- ADMIN -->
-
-<div id="admin-screen" class="hidden">
-
-<header>Admin Dashboard</header>
-
-<div class="container">
-
+<div id="admin" class="hidden">
+<h2>Create Event</h2>
 <input id="eventName" placeholder="Event name">
-<button onclick="createEvent()">Create Event</button>
-
-<h3>Events</h3>
+<button onclick="createEvent()">Create</button>
 <div id="events"></div>
-
-<h3>Global QR</h3>
-<div id="qr"></div>
-
-</div>
+<button onclick="goHome()">Back</button>
 </div>
 
-<!-- PARTICIPANT -->
-
-<div id="participant-screen" class="hidden">
-
-<header>Join Event</header>
-
-<div class="container">
-
-<input id="pname" placeholder="Your name">
-<input id="pemail" placeholder="Email">
-
-<div id="eventList"></div>
-
+<div id="participant" class="hidden">
+<h2>Join Event</h2>
+<select id="eventSelect"></select>
+<input id="participantName" placeholder="Your name">
 <button onclick="joinEvent()">Join</button>
-
+<button onclick="goHome()">Back</button>
 </div>
-</div>
 
-<script src="./script.js"></script>
+<script type="module" src="script.js"></script>
+
 </body>
 </html>
-
-
