@@ -1,29 +1,50 @@
 body{
 margin:0;
-background:#0b1220;
+font-family:system-ui;
+background:linear-gradient(135deg,#050b16,#0a1f33);
 color:white;
-font-family:Arial;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 height:100vh;
 }
 
-.hidden{display:none}
+.center-card{
+background:#0e2238;
+padding:30px;
+border-radius:12px;
+width:320px;
+text-align:center;
+box-shadow:0 0 40px rgba(0,0,0,.5);
+}
 
 button{
-padding:12px 20px;
-margin:5px;
-background:#1c64f2;
+background:#1e90ff;
 border:none;
+padding:12px;
+width:100%;
+margin-top:10px;
 border-radius:6px;
 color:white;
 cursor:pointer;
+font-weight:bold;
 }
 
+button:hover{background:#0f7ae5;}
+
 input,select{
+width:100%;
 padding:10px;
-margin:5px;
-border-radius:5px;
+margin-top:10px;
+border-radius:6px;
 border:none;
+}
+
+.hidden{display:none;}
+
+#eventList div{
+background:#122b48;
+padding:8px;
+margin-top:5px;
+border-radius:6px;
 }
