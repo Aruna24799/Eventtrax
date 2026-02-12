@@ -9,41 +9,36 @@
 
 <body>
 
-<div id="rolePage" class="center-card">
+<div id="home" class="card">
 <h1>EventraX</h1>
-<button onclick="showAdmin()">Admin</button>
-<button onclick="showParticipant()">Participant</button>
+<button onclick="showAdmin()">Admin Panel</button>
+<button onclick="showParticipant()">Join Event</button>
 </div>
 
-<!-- ADMIN -->
-<div id="adminPage" class="hidden center-card">
+<div id="adminPage" class="card hidden">
 <h2>Admin Dashboard</h2>
 
-<input id="eventName" placeholder="Event name">
+<input id="eventName" placeholder="Create new event">
 <button onclick="createEvent()">Create Event</button>
 
-<h3>Events</h3>
 <div id="eventList"></div>
 
 <button onclick="goHome()">Back</button>
 </div>
 
-<!-- PARTICIPANT -->
-<div id="participantPage" class="hidden center-card">
-
+<div id="participantPage" class="card hidden">
 <h2>Join Event</h2>
 
-<div id="qr"></div>
-
 <select id="eventSelect"></select>
-
-<input id="participantName" placeholder="Your name">
+<input id="participantName" placeholder="Your Name">
 <button onclick="joinEvent()">Join</button>
 
-<button onclick="goHome()">Back</button>
+<div id="qr" style="margin-top:20px;"></div>
 
+<button onclick="goHome()">Back</button>
 </div>
 
 <script src="script.js"></script>
 </body>
 </html>
+
