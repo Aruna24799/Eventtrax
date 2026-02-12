@@ -1,57 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Eventtrax</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>EventraX</title>
 
-<style>
-body{
-margin:0;
-height:100vh;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-display:flex;
-justify-content:center;
-align-items:center;
-font-family:Arial;
-color:white;
-}
+<link rel="stylesheet" href="./style.css">
 
-.card{
-background:#111;
-padding:40px;
-border-radius:15px;
-width:300px;
-text-align:center;
-box-shadow:0 0 40px rgba(0,0,0,.5);
-}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-button{
-width:100%;
-padding:12px;
-margin-top:15px;
-border:none;
-border-radius:6px;
-background:#00bcd4;
-font-weight:bold;
-cursor:pointer;
-}
-
-button:hover{opacity:.8}
-</style>
 </head>
 
 <body>
 
-<div class="card">
-<h2>Welcome to Eventtrax</h2>
+<div id="role">
 
-<button onclick="location.href='admin.html'">Organizer</button>
+<h1>EventraX</h1>
 
-<button onclick="location.href='participant.html'">Participant</button>
-<script type="module" src="./script.js"></script>
+<button onclick="showAdmin()">Admin</button>
+<button onclick="showParticipant()">Participant</button>
 
 </div>
 
+<!-- ADMIN -->
+
+<div id="admin" class="hidden">
+
+<h2>Admin Dashboard</h2>
+
+<input id="eventName" placeholder="Event name">
+<button onclick="createEvent()">Create Event</button>
+
+<h3>Events</h3>
+<div id="events"></div>
+
+<div id="qr"></div>
+
+<button onclick="back()">Back</button>
+
+</div>
+
+<!-- PARTICIPANT -->
+
+<div id="participant" class="hidden">
+
+<h2>Join Event</h2>
+
+<div id="eventList"></div>
+
+<input id="pname" placeholder="Your name">
+
+<button onclick="joinEvent()">Join</button>
+
+<button onclick="back()">Back</button>
+
+</div>
+
+<script src="./script.js"></script>
+
 </body>
 </html>
-
