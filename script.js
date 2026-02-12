@@ -1,57 +1,79 @@
-const events=[];
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-function showAdmin(){
-document.getElementById("role-screen").style.display="none";
-document.getElementById("admin-screen").style.display="block";
+const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
 
-generateQR();
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentEvent = null;
+
+/* ---------- ROLE SWITCH ---------- */
+
+window.showAdmin = () => {
+  role-screen.classList.add("hidden");
+  admin-screen.classList.remove("hidden");
+  loadAdminEvents();
+};
+
+window.showParticipant = () => {
+  role-screen.classList.add("hidden");
+  participant-screen.classList.remove("hidden");
+  loadPublicEvents();
+};
+
+/* ---------- ADMIN ---------- */
+
+window.createEvent = async () => {
+  const name = eventName.value.trim();
+  if (!name) return alert("Enter event");
+
+  const { error } = await supabase.from("events").insert([{ name }]);
+
+  if (error) return alert(error.message);
+
+  eventName.value = "";
+  loadAdminEvents();
+};
+
+async function loadAdminEvents() {
+  const { data } = await supabase.from("events").select("*").order("id",{ascending:false});
+
+  events.innerHTML = "";
+
+  data.forEach(e=>{
+    events.innerHTML += `<div class="event">${e.name}</div>`;
+  });
 }
 
-function showParticipant(){
-document.getElementById("role-screen").style.display="none";
-document.getElementById("participant-screen").style.display="block";
-renderEvents();
+/* ---------- PARTICIPANT ---------- */
+
+async function loadPublicEvents(){
+  const { data } = await supabase.from("events").select("*");
+
+  eventList.innerHTML="";
+
+  data.forEach(e=>{
+    eventList.innerHTML += `<div class="event" onclick="selectEvent(${e.id})">${e.name}</div>`;
+  });
 }
 
-function createEvent(){
-let name=document.getElementById("eventName").value;
-if(!name)return alert("Enter event");
+window.selectEvent = id => currentEvent = id;
 
-events.push(name);
-document.getElementById("eventName").value="";
-renderAdmin();
-}
+window.joinEvent = async () => {
+  if(!currentEvent) return alert("Select event");
 
-function renderAdmin(){
-let html="";
-events.forEach(e=>{
-html+=`<div class="event">${e}</div>`;
-});
-document.getElementById("events").innerHTML=html;
-}
+  const name = pname.value.trim();
+  const email = pemail.value.trim();
 
-function renderEvents(){
-let html="";
-events.forEach(e=>{
-html+=`<div class="event">${e}</div>`;
-});
-document.getElementById("eventList").innerHTML=html;
-}
+  if(!name || !email) return alert("Fill all fields");
 
-function joinEvent(){
-let n=document.getElementById("pname").value;
-let e=document.getElementById("pemail").value;
+  const { error } = await supabase.from("participants").insert([
+    { name, email, event_id: currentEvent }
+  ]);
 
-if(!n||!e)return alert("Fill fields");
+  if(error) return alert(error.message);
 
-alert("Joined successfully!");
-}
-
-function generateQR(){
-document.getElementById("qr").innerHTML="";
-new QRCode(document.getElementById("qr"),{
-text:window.location.href,
-width:180,
-height:180
-});
-}
+  alert("Joined successfully!");
+  pname.value="";
+  pemail.value="";
+};
