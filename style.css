@@ -1,120 +1,92 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+*{
+box-sizing:border-box;
 }
 
-body {
-  background: linear-gradient(135deg,#020617,#0f172a);
-  color: white;
-  min-height: 100vh;
+body{
+margin:0;
+font-family:system-ui,Arial;
+background:#0b1220;
+color:white;
 }
 
-/* LOGIN */
-
-.login {
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px 20px;
 }
 
-.login h1 {
-  margin-bottom:20px;
+.card{
+background:#121a2b;
+border-radius:12px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.5);
 }
 
-.login input {
-  width:280px;
-  padding:14px;
-  border-radius:8px;
-  border:none;
-  margin-bottom:12px;
-  font-size:16px;
+h1,h2,h3{
+margin-top:0;
 }
 
-.login button {
-  width:280px;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#6366f1;
-  color:white;
-  font-size:16px;
-  cursor:pointer;
+input{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:none;
+margin-top:10px;
+background:#1c2640;
+color:white;
 }
 
-/* DASHBOARD */
-
-.hidden { display:none; }
-
-.app {
-  display:flex;
-  height:100vh;
+button{
+margin-top:12px;
+padding:12px;
+border:none;
+border-radius:6px;
+background:#38bdf8;
+color:black;
+font-weight:bold;
+cursor:pointer;
 }
 
-.sidebar {
-  width:220px;
-  background:#020617;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
+button:hover{
+opacity:.85;
 }
 
-.logo {
-  font-size:22px;
-  margin-bottom:30px;
+.event-card{
+border:1px solid #38bdf8;
+border-radius:8px;
+padding:12px;
+margin-bottom:10px;
+cursor:pointer;
 }
 
-.sidebar nav a {
-  display:block;
-  padding:10px;
-  margin-bottom:6px;
-  border-radius:6px;
-  background:#0f172a;
+.event-card:hover{
+background:#1c2640;
 }
 
-.logout {
-  margin-top:auto;
-  background:#ef4444;
-  border:none;
-  padding:10px;
-  border-radius:6px;
-  color:white;
+.center{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
-.main {
-  flex:1;
-  padding:30px;
+.role-card{
+background:#121a2b;
+padding:40px;
+border-radius:15px;
+width:280px;
+text-align:center;
 }
 
-.panel {
-  background:#020617;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
+.small{
+opacity:.7;
+font-size:13px;
+text-align:center;
 }
 
-input {
-  width:100%;
-  padding:12px;
-  border-radius:6px;
-  border:none;
-  margin-bottom:10px;
-}
-
-button {
-  padding:12px;
-  border:none;
-  border-radius:6px;
-  background:#6366f1;
-  color:white;
-}
-
-#events p {
-  background:#0f172a;
-  padding:10px;
-  margin-top:6px;
-  border-radius:6px;
+.qr{
+display:flex;
+justify-content:center;
+margin-top:10px;
 }
