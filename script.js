@@ -8,15 +8,16 @@ const headers = {
 };
 
 function showAdmin(){
-rolePage.classList.add("hidden");
-adminPage.classList.remove("hidden");
+document.getElementById("home").classList.add("hidden");
+document.getElementById("adminPage").classList.remove("hidden");
 loadEvents();
 }
 
 function showParticipant(){
-rolePage.classList.add("hidden");
-participantPage.classList.remove("hidden");
+document.getElementById("home").classList.add("hidden");
+document.getElementById("participantPage").classList.remove("hidden");
 loadEvents();
+}
 
 document.getElementById("qr").innerHTML="";
 new QRCode(document.getElementById("qr"), window.location.href);
@@ -71,3 +72,4 @@ body:JSON.stringify({name,event_id})
 alert("Joined!");
 participantName.value="";
 }
+
