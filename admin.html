@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Eventtrax Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<input id="eventName" placeholder="Event name">
+<button onclick="createEvent()">Create Event</button>
+
+<div id="events"></div>
+
+<script type="module">
+
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabase=createClient(
+"https://pxtpsugbuunjzurdvzkc.supabase.co",
+"sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW"
+);
+
+window.createEvent=async()=>{
+const name=document.getElementById("eventName").value;
+await supabase.from("events").insert([{name}]);
+loadEvents();
+};
+
+async function loadEvents(){
+const {data}=await supabase.from("events").select("*");
+document.getElementById("events").innerHTML=data.map(e=>`<p>${e.name}</p>`).join("");
+}
+
+loadEvents();
+
+</script>
+
+</body>
+</html>
