@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Eventtrax Join</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+<h2>Select Event</h2>
+
+<div id="events"></div>
+
+<input id="name" placeholder="Your name">
+<button onclick="join()">Join</button>
+
+<script type="module">
+
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabase=createClient(
+"https://pxtpsugbuunjzurdvzkc.supabase.co",
+"sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW"
+);
+
+let selected=null;
+
+async function load(){
+const {data}=await supabase.from("events").select("*");
+document.getElementById("events").innerHTML=data.map(e=>
+`<button onclick="select(${e.id})">${e.name}</button><br>`).join("");
+}
+
+window.select=id=>selected=id;
+
+window.join=async()=>{
+const name=document.getElementById("name").value;
+await supabase.from("participants").insert([{name,event_id:selected}]);
+alert("Joined");
+};
+
+load();
+
+</script>
+
+</body>
+</html>
