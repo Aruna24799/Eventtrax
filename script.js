@@ -10,20 +10,11 @@ const headers = {
   "Content-Type": "application/json"
 };
 
-// =======================
-// ELEMENTS
-// =======================
-
 const home = document.getElementById("home");
 const admin = document.getElementById("admin");
 const participant = document.getElementById("participant");
-
 const eventsDiv = document.getElementById("events");
 const eventSelect = document.getElementById("eventSelect");
-
-// =======================
-// NAVIGATION FUNCTIONS
-// =======================
 
 function openAdmin() {
   home.classList.add("hidden");
@@ -41,10 +32,6 @@ function goHome() {
   location.reload();
 }
 
-// =======================
-// CREATE EVENT
-// =======================
-
 async function createEvent() {
   const name = document.getElementById("eventName").value.trim();
 
@@ -61,8 +48,7 @@ async function createEvent() {
 
   if (!res.ok) {
     const err = await res.text();
-    console.log(err);
-    alert("Error creating event");
+    alert(err);
     return;
   }
 
@@ -70,21 +56,8 @@ async function createEvent() {
   loadEvents();
 }
 
-// =======================
-// LOAD EVENTS
-// =======================
-
 async function loadEvents() {
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/events?select=*`,
-    { headers }
-  );
-
-  if (!res.ok) {
-    console.log("Error loading events");
-    return;
-  }
-
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/events?select=*`, { headers });
   const data = await res.json();
 
   eventsDiv.innerHTML = "";
@@ -95,10 +68,6 @@ async function loadEvents() {
     eventSelect.innerHTML += `<option value="${e.id}">${e.name}</option>`;
   });
 }
-
-// =======================
-// JOIN EVENT
-// =======================
 
 async function joinEvent() {
   const name = document.getElementById("userName").value.trim();
@@ -112,16 +81,21 @@ async function joinEvent() {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/participants`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ name, event_id })
+    body: JSON.stringify({
+      name,
+      event_id: Number(event_id)
+    })
   });
 
   if (!res.ok) {
     const err = await res.text();
-    console.log(err);
-    alert("Error joining event");
+    alert(err);
     return;
   }
 
-  alert("Joined successfully!");
+  alert("Joined!");
   document.getElementById("userName").value = "";
 }
+
+
+
