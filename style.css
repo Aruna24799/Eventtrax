@@ -1,79 +1,44 @@
-body {
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:white;
+body{
+margin:0;
+background:#0b1220;
+color:white;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
-.center-screen {
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+.center{
+text-align:center;
 }
 
-.card {
-  background:#111827;
-  padding:40px;
-  border-radius:15px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.5);
-  text-align:center;
-  width:300px;
+.hidden{
+display:none;
 }
 
-.page {
-  padding:40px;
-  max-width:600px;
-  margin:auto;
+input,select{
+padding:10px;
+margin:10px;
+width:250px;
+border-radius:6px;
+border:none;
 }
 
-.section {
-  margin-bottom:20px;
+button{
+padding:12px 25px;
+margin:10px;
+background:#2563eb;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
 }
 
-input, select {
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:8px;
+button:hover{
+background:#1d4ed8;
 }
 
-button {
-  margin-top:15px;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  width:100%;
-  font-weight:bold;
-}
-
-.primary-btn {
-  background:#3b82f6;
-  color:white;
-}
-
-.primary-btn:hover {
-  background:#2563eb;
-}
-
-.secondary-btn {
-  background:#374151;
-  color:white;
-}
-
-.secondary-btn:hover {
-  background:#4b5563;
-}
-
-.hidden {
-  display:none;
-}
-
-.list div {
-  background:#1f2937;
-  padding:12px;
-  margin:10px 0;
-  border-radius:8px;
+#adminPage,#participantPage{
+text-align:center;
 }
