@@ -49,9 +49,7 @@ async function addEvent() {
  document.getElementById("eventName").value = "";
  loadEvents();
 }
-document.getElementById("eventName").value="";
-loadEvents();
-}
+
 
 async function loadEvents(){
 
@@ -83,6 +81,7 @@ body:JSON.stringify({name,event_id})
 alert("Joined!");
 document.getElementById("userName").value="";
 }
+
 
 
 
