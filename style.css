@@ -1,44 +1,23 @@
 body{
-margin:0;
-background:#0b1220;
+background:#0f172a;
 color:white;
 font-family:Arial;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.center{
 text-align:center;
+padding-top:100px;
 }
 
-.hidden{
-display:none;
-}
+.hide{display:none}
 
 input,select{
 padding:10px;
 margin:10px;
-width:250px;
-border-radius:6px;
-border:none;
+width:200px;
 }
 
 button{
-padding:12px 25px;
-margin:10px;
+padding:10px 20px;
 background:#2563eb;
 border:none;
-border-radius:8px;
 color:white;
 cursor:pointer;
-}
-
-button:hover{
-background:#1d4ed8;
-}
-
-#adminPage,#participantPage{
-text-align:center;
 }
