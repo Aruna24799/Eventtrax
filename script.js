@@ -1,87 +1,127 @@
+// =======================
+// SUPABASE CONFIG
+// =======================
 const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
+
 const headers = {
-apikey: SUPABASE_KEY,
-Authorization: "Bearer " + SUPABASE_KEY,
-"Content-Type":"application/json"
+  apikey: SUPABASE_KEY,
+  Authorization: "Bearer " + SUPABASE_KEY,
+  "Content-Type": "application/json"
 };
 
-const home=document.getElementById("home");
-const admin=document.getElementById("admin");
-const participant=document.getElementById("participant");
-const eventsDiv=document.getElementById("events");
-const eventSelect=document.getElementById("eventSelect");
+// =======================
+// ELEMENTS
+// =======================
 
-function openAdmin(){
-home.classList.add("hidden");
-admin.classList.remove("hidden");
-loadEvents();
+const home = document.getElementById("home");
+const admin = document.getElementById("admin");
+const participant = document.getElementById("participant");
+
+const eventsDiv = document.getElementById("events");
+const eventSelect = document.getElementById("eventSelect");
+
+// =======================
+// NAVIGATION FUNCTIONS
+// =======================
+
+function openAdmin() {
+  home.classList.add("hidden");
+  admin.classList.remove("hidden");
+  loadEvents();
 }
 
-function openParticipant(){
-home.classList.add("hidden");
-participant.classList.remove("hidden");
-loadEvents();
+function openParticipant() {
+  home.classList.add("hidden");
+  participant.classList.remove("hidden");
+  loadEvents();
 }
 
-function goHome(){
-location.reload();
+function goHome() {
+  location.reload();
 }
 
-async function addEvent() {
- const name = document.getElementById("eventName").value.trim();
+// =======================
+// CREATE EVENT
+// =======================
 
- if (!name) return alert("Enter event");
+async function createEvent() {
+  const name = document.getElementById("eventName").value.trim();
 
- const res = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
-   method: "POST",
-   headers,
-   body: JSON.stringify({ name })
- });
+  if (!name) {
+    alert("Enter event name");
+    return;
+  }
 
- if (!res.ok) {
-   const err = await res.text();
-   console.log(err);
-   alert(err);
-   return;
- }
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ name })
+  });
 
- document.getElementById("eventName").value = "";
- loadEvents();
+  if (!res.ok) {
+    const err = await res.text();
+    console.log(err);
+    alert("Error creating event");
+    return;
+  }
+
+  document.getElementById("eventName").value = "";
+  loadEvents();
 }
 
+// =======================
+// LOAD EVENTS
+// =======================
 
-async function loadEvents(){
+async function loadEvents() {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/events?select=*`,
+    { headers }
+  );
 
-const res=await fetch(`${SUPABASE_URL}/rest/v1/events?select=*`,{headers});
-const data=await res.json();
+  if (!res.ok) {
+    console.log("Error loading events");
+    return;
+  }
 
-eventsDiv.innerHTML="";
-eventSelect.innerHTML="";
+  const data = await res.json();
 
-data.forEach(e=>{
-eventsDiv.innerHTML+=`<div>${e.name}</div>`;
-eventSelect.innerHTML+=`<option value="${e.id}">${e.name}</option>`;
-});
+  eventsDiv.innerHTML = "";
+  eventSelect.innerHTML = "";
+
+  data.forEach(e => {
+    eventsDiv.innerHTML += `<div>${e.name}</div>`;
+    eventSelect.innerHTML += `<option value="${e.id}">${e.name}</option>`;
+  });
 }
 
-async function joinEvent(){
+// =======================
+// JOIN EVENT
+// =======================
 
-const name=document.getElementById("userName").value;
-const event_id=eventSelect.value;
+async function joinEvent() {
+  const name = document.getElementById("userName").value.trim();
+  const event_id = eventSelect.value;
 
-if(!name)return alert("Enter name");
+  if (!name) {
+    alert("Enter your name");
+    return;
+  }
 
-await fetch(`${SUPABASE_URL}/rest/v1/participants`,{
-method:"POST",
-headers,
-body:JSON.stringify({name,event_id})
-});
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/participants`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ name, event_id })
+  });
 
-alert("Joined!");
-document.getElementById("userName").value="";
+  if (!res.ok) {
+    const err = await res.text();
+    console.log(err);
+    alert("Error joining event");
+    return;
+  }
+
+  alert("Joined successfully!");
+  document.getElementById("userName").value = "";
 }
-
-
-
-
