@@ -28,16 +28,27 @@ function goHome(){
 location.reload();
 }
 
-async function createEvent(){
-const name=document.getElementById("eventName").value;
-if(!name)return alert("Enter event");
+async function createEvent() {
+ const name = document.getElementById("eventName").value.trim();
 
-await fetch(`${SUPABASE_URL}/rest/v1/events`,{
-method:"POST",
-headers,
-body:JSON.stringify({name})
-});
+ if (!name) return alert("Enter event");
 
+ const res = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+   method: "POST",
+   headers,
+   body: JSON.stringify({ name })
+ });
+
+ if (!res.ok) {
+   const err = await res.text();
+   console.log(err);
+   alert(err);
+   return;
+ }
+
+ document.getElementById("eventName").value = "";
+ loadEvents();
+}
 document.getElementById("eventName").value="";
 loadEvents();
 }
@@ -72,4 +83,5 @@ body:JSON.stringify({name,event_id})
 alert("Joined!");
 document.getElementById("userName").value="";
 }
+
 
