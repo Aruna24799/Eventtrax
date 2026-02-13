@@ -1,55 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>EventTrax</title>
-
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-<div id="landing" class="center">
-
-  <h1>EventTraX</h1>
-
-  <button id="adminBtn">Admin</button>
-  <button id="participantBtn">Participant</button>
-
+<div id="home">
+<h1>EventTrax</h1>
+<button onclick="admin()">Admin</button>
+<button onclick="participant()">Participant</button>
 </div>
 
-<!-- ADMIN -->
-
-<div id="adminPage" class="hidden">
-
-  <h2>Admin Panel</h2>
-
-  <input id="eventName" placeholder="Event name">
-
-  <button id="createEventBtn">Create Event</button>
-
-  <h3>Events</h3>
-
-  <div id="eventList"></div>
-
+<div id="admin" class="hide">
+<input id="eventName" placeholder="Event name">
+<button onclick="createEvent()">Create</button>
+<div id="events"></div>
 </div>
 
-<!-- PARTICIPANT -->
-
-<div id="participantPage" class="hidden">
-
-  <h2>Join Event</h2>
-
-  <input id="participantName" placeholder="Your name">
-
-  <select id="eventSelect"></select>
-
-  <button id="joinEventBtn">Join</button>
-
+<div id="participant" class="hide">
+<input id="userName" placeholder="Your name">
+<select id="eventSelect"></select>
+<button onclick="join()">Join</button>
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
