@@ -28,7 +28,7 @@ function goHome(){
 location.reload();
 }
 
-async function createEvent() {
+async function addEvent() {
  const name = document.getElementById("eventName").value.trim();
 
  if (!name) return alert("Enter event");
@@ -83,5 +83,6 @@ body:JSON.stringify({name,event_id})
 alert("Joined!");
 document.getElementById("userName").value="";
 }
+
 
 
