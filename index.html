@@ -9,20 +9,24 @@
 
 <div id="home">
 <h1>EventTrax</h1>
-<button onclick="admin()">Admin</button>
-<button onclick="participant()">Participant</button>
+<button onclick="openAdmin()">Admin</button>
+<button onclick="openParticipant()">Participant</button>
 </div>
 
-<div id="admin" class="hide">
+<div id="admin" class="hidden">
+<h2>Admin Panel</h2>
 <input id="eventName" placeholder="Event name">
-<button onclick="createEvent()">Create</button>
+<button onclick="createEvent()">Create Event</button>
 <div id="events"></div>
+<button onclick="location.reload()">Back</button>
 </div>
 
-<div id="participant" class="hide">
+<div id="participant" class="hidden">
+<h2>Join Event</h2>
 <input id="userName" placeholder="Your name">
 <select id="eventSelect"></select>
-<button onclick="join()">Join</button>
+<button onclick="joinEvent()">Join</button>
+<button onclick="location.reload()">Back</button>
 </div>
 
 <script src="script.js"></script>
