@@ -1,5 +1,5 @@
-const SUPABASE_URL="PASTE_PROJECT_URL";
-const SUPABASE_KEY="PASTE_ANON_PUBLIC_KEY";
+const SUPABASE_URL="https://pxtpsugbuunjzurdvzkc.supabase.co";
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
 
 const headers={
 apikey:SUPABASE_KEY,
@@ -81,3 +81,4 @@ data.forEach(p=>{
 participantList.innerHTML+=`<div class="event">${p.name}</div>`;
 });
 }
+
