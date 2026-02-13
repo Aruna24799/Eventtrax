@@ -1,23 +1,26 @@
 body{
-background:#0f172a;
+background:#0d1117;
 color:white;
 font-family:Arial;
 text-align:center;
-padding-top:100px;
 }
 
-.hide{display:none}
+.hidden{display:none}
+
+button{
+padding:10px 20px;
+background:#238636;
+border:none;
+color:white;
+margin:10px;
+border-radius:6px;
+cursor:pointer;
+}
 
 input,select{
 padding:10px;
 margin:10px;
 width:200px;
-}
-
-button{
-padding:10px 20px;
-background:#2563eb;
+border-radius:6px;
 border:none;
-color:white;
-cursor:pointer;
 }
