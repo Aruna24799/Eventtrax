@@ -8,40 +8,39 @@
 
 <body>
 
-<div id="home" class="screen">
-<h1>EventTrax</h1>
-<button onclick="openAdmin()">Admin</button>
-<button onclick="openParticipant()">Participant</button>
+<!-- HOME SCREEN -->
+<div id="home">
+  <h1>EventTrax</h1>
+  <button onclick="openAdmin()">Admin</button>
+  <button onclick="openParticipant()">Participant</button>
 </div>
 
-<div id="admin" class="screen hidden">
-<h2>Create Event</h2>
 
-<input id="eventName" placeholder="Event Name">
-<button onclick="addEvent()">Create</button>
+<!-- ADMIN SCREEN -->
+<div id="admin" class="hidden">
+  <h2>Create Event</h2>
+  <input id="eventName" placeholder="Event name">
+  <button onclick="createEvent()">Create</button>
 
-<h3>Events</h3>
-<div id="events"></div>
+  <h3>Events</h3>
+  <div id="events"></div>
 
-<button onclick="goHome()">Back</button>
+  <button onclick="goHome()">Back</button>
 </div>
 
-<div id="participant" class="screen hidden">
 
-<h2>Join Event</h2>
+<!-- PARTICIPANT SCREEN -->
+<div id="participant" class="hidden">
+  <input id="userName" placeholder="Your name">
+  <select id="eventSelect"></select>
+  <button onclick="joinEvent()">Join</button>
 
-<input id="userName" placeholder="Your Name">
-
-<select id="eventSelect"></select>
-
-<button onclick="joinEvent()">Join</button>
-
-<button onclick="goHome()">Back</button>
-
+  <button onclick="goHome()">Back</button>
 </div>
 
 <script src="script.js"></script>
 
 </body>
 </html>
+
 
