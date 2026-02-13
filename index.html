@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>EventTrax</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="home">
+<div id="home" class="screen">
 <h1>EventTrax</h1>
 <button onclick="openAdmin()">Admin</button>
 <button onclick="openParticipant()">Participant</button>
 </div>
 
-<div id="admin" class="hidden">
-<h2>Admin Panel</h2>
-<input id="eventName" placeholder="Event name">
-<button onclick="createEvent()">Create Event</button>
+<div id="admin" class="screen hidden">
+<h2>Create Event</h2>
+
+<input id="eventName" placeholder="Event Name">
+<button onclick="createEvent()">Create</button>
+
+<h3>Events</h3>
 <div id="events"></div>
-<button onclick="location.reload()">Back</button>
+
+<button onclick="goHome()">Back</button>
 </div>
 
-<div id="participant" class="hidden">
+<div id="participant" class="screen hidden">
+
 <h2>Join Event</h2>
-<input id="userName" placeholder="Your name">
+
+<input id="userName" placeholder="Your Name">
+
 <select id="eventSelect"></select>
+
 <button onclick="joinEvent()">Join</button>
-<button onclick="location.reload()">Back</button>
+
+<button onclick="goHome()">Back</button>
+
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
