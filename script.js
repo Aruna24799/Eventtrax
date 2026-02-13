@@ -1,66 +1,62 @@
-const home=document.getElementById("home");
-const adminDiv=document.getElementById("admin");
-const participantDiv=document.getElementById("participant");
-const eventName=document.getElementById("eventName");
-const events=document.getElementById("events");
-const eventSelect=document.getElementById("eventSelect");
-const userName=document.getElementById("userName");
-const URL="https://pxtpsugbuunjzurdvzkc.supabase.co";
-const KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
+const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
 
-const headers={
-apikey:KEY,
-Authorization:`Bearer ${KEY}`,
-"Content-Type":"application/json"
+const headers = {
+apikey: SUPABASE_KEY,
+Authorization: "Bearer " + SUPABASE_KEY,
+"Content-Type": "application/json"
 };
 
-function admin(){
-home.style.display="none";
-adminDiv.style.display="block";
-load();
+const home=document.getElementById("home");
+const admin=document.getElementById("admin");
+const participant=document.getElementById("participant");
+const events=document.getElementById("events");
+const eventSelect=document.getElementById("eventSelect");
+
+function openAdmin(){
+home.classList.add("hidden");
+admin.classList.remove("hidden");
+loadEvents();
 }
 
-function participant(){
-home.style.display="none";
-participantDiv.style.display="block";
-load();
+function openParticipant(){
+home.classList.add("hidden");
+participant.classList.remove("hidden");
+loadEvents();
 }
 
 async function createEvent(){
-let name=eventName.value;
-
-await fetch(`${URL}/rest/v1/events`,{
+const name=document.getElementById("eventName").value;
+await fetch(`${SUPABASE_URL}/rest/v1/events`,{
 method:"POST",
 headers,
 body:JSON.stringify({name})
 });
-
-load();
+loadEvents();
 }
 
-async function load(){
-let r=await fetch(`${URL}/rest/v1/events`,{headers});
-let d=await r.json();
+async function loadEvents(){
+const res=await fetch(`${SUPABASE_URL}/rest/v1/events?select=*`,{headers});
+const data=await res.json();
 
 events.innerHTML="";
 eventSelect.innerHTML="";
 
-d.forEach(e=>{
+data.forEach(e=>{
 events.innerHTML+=`<p>${e.name}</p>`;
 eventSelect.innerHTML+=`<option value="${e.id}">${e.name}</option>`;
 });
 }
 
-async function join(){
-await fetch(`${URL}/rest/v1/participants`,{
+async function joinEvent(){
+const name=document.getElementById("userName").value;
+const event_id=eventSelect.value;
+
+await fetch(`${SUPABASE_URL}/rest/v1/participants`,{
 method:"POST",
 headers,
-body:JSON.stringify({
-name:userName.value,
-event_id:eventSelect.value
-})
+body:JSON.stringify({name,event_id})
 });
 
-alert("Joined");
+alert("Joined!");
 }
-
