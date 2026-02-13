@@ -32,7 +32,7 @@ function goHome() {
   location.reload();
 }
 
-async function createEvent() {
+async function addEvent() {
   const name = document.getElementById("eventName").value.trim();
 
   if (!name) {
@@ -96,6 +96,7 @@ async function joinEvent() {
   alert("Joined!");
   document.getElementById("userName").value = "";
 }
+
 
 
 
