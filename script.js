@@ -9,6 +9,23 @@ const headers = {
   Authorization: "Bearer " + SUPABASE_KEY,
   "Content-Type": "application/json"
 };
+function openAdmin(){
+home.classList.add("hidden");
+participant.classList.add("hidden");
+admin.classList.remove("hidden");
+loadEvents();
+}
+
+function openParticipant(){
+home.classList.add("hidden");
+admin.classList.add("hidden");
+participant.classList.remove("hidden");
+loadEvents();
+}
+
+function goHome(){
+location.reload();
+}
 
 const home = document.getElementById("home");
 const admin = document.getElementById("admin");
@@ -199,6 +216,7 @@ body:JSON.stringify({ name, rating, comment, event_id })
 alert("Feedback submitted!");
 document.getElementById("comment").value="";
 }
+
 
 
 
