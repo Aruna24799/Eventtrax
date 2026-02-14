@@ -1,42 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>Eventrax</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 </head>
 
 <body>
 
 <div id="home" class="center">
 <h1>Eventrax</h1>
+<div class="card">
 <button onclick="openAdmin()">Admin</button>
 <button onclick="openParticipant()">Participant</button>
 </div>
-
-<!-- ADMIN -->
+</div>
 
 <div id="admin" class="hidden panel">
-
 <h2>Admin Dashboard</h2>
 
-<input id="eventName" placeholder="Event Name">
-<button onclick="createEvent()">Create Event</button>
+<input id="eventName" placeholder="Create Event">
+<button onclick="createEvent()">Create</button>
 
 <h3>Events</h3>
 <div id="events"></div>
 
 <button onclick="endEvent()">End Event</button>
-
-<h3>Analytics</h3>
-<div id="stats"></div>
-
-<button onclick="goHome()">Logout</button>
-
+<button onclick="goHome()">Exit</button>
 </div>
-
-<!-- PARTICIPANT -->
 
 <div id="participant" class="hidden panel">
 
@@ -46,30 +37,23 @@
 
 <select id="eventSelect"></select>
 
-<input id="userName" placeholder="Your Name">
+<input id="userName" placeholder="Name">
 <input id="userEmail" placeholder="Email">
 
 <button onclick="joinEvent()">Join</button>
 
-<div id="feedbackBox" class="hidden">
+<div id="feedback" class="hidden">
 <h3>Feedback</h3>
-<select id="rating">
-<option>⭐</option>
-<option>⭐⭐</option>
-<option>⭐⭐⭐</option>
-<option>⭐⭐⭐⭐</option>
-<option>⭐⭐⭐⭐⭐</option>
-</select>
-<textarea id="comment" placeholder="Comment"></textarea>
-<button onclick="sendFeedback()">Submit Feedback</button>
-
-<button onclick="downloadCert()">Download Certificate</button>
+<input id="rating" placeholder="Rating 1–5">
+<button onclick="submitFeedback()">Submit</button>
 </div>
 
-<button onclick="goHome()">Back</button>
+<button id="certBtn" class="hidden" onclick="downloadCert()">Download Certificate</button>
+
+<button onclick="goHome()">Exit</button>
 
 </div>
 
-<script src="script.js"></script>
+<script src="./script.js"></script>
 </body>
 </html>
