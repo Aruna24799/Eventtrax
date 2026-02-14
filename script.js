@@ -81,20 +81,38 @@ alert("Joined!");
 
 }
 
-async function submitFeedback(){
+async function submitFeedback() {
 
-const feedback = document.getElementById("feedbackText").value;
-const rating = document.getElementById("rating").value;
+  const name = document.getElementById("participantName").value;
+  const feedback = document.getElementById("feedbackText").value;
+  const rating = document.getElementById("rating").value;
 
-if(!feedback) return alert("Enter feedback");
+  if (!name || !feedback) {
+    alert("Enter name + feedback");
+    return;
+  }
 
-await fetch(`${SUPABASE_URL}/rest/v1/feedback`,{
-method:"POST",
-headers,
-body:JSON.stringify({feedback,rating})
-});
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Prefer": "return=minimal"
+    },
+    body: JSON.stringify({
+      name: name,
+      feedback: feedback,
+      rating: rating
+    })
+  });
 
-alert("Feedback saved");
+  if (!res.ok) {
+    const err = await res.text();
+    console.error(err);
+    alert(err);
+    return;
+  }
+
+  alert("Feedback saved!");
 }
 
 function downloadCertificate(){
@@ -111,6 +129,7 @@ pdf.text(`Event: ${joinedEvent}`,50,80);
 
 pdf.save("certificate.pdf");
 }
+
 
 
 
