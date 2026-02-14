@@ -12,40 +12,30 @@ const admin=document.getElementById("admin");
 const participant=document.getElementById("participant");
 const eventsDiv=document.getElementById("events");
 const eventSelect=document.getElementById("eventSelect");
-const feedbackBox=document.getElementById("feedbackBox");
-const stats=document.getElementById("stats");
-
-let eventEnded=false;
 
 function openAdmin(){
 home.classList.add("hidden");
 admin.classList.remove("hidden");
 loadEvents();
-loadStats();
 }
 
 function openParticipant(){
 home.classList.add("hidden");
 participant.classList.remove("hidden");
 loadEvents();
-
 document.getElementById("qr").innerHTML="";
-new QRCode(document.getElementById("qr"), location.href);
+new QRCode(document.getElementById("qr"),location.href);
 }
 
 function goHome(){location.reload();}
 
 async function createEvent(){
 const name=eventName.value;
-if(!name)return alert("Enter event");
-
 await fetch(`${SUPABASE_URL}/rest/v1/events`,{
 method:"POST",
 headers,
-body:JSON.stringify({name,status:"LIVE"})
+body:JSON.stringify({name})
 });
-
-eventName.value="";
 loadEvents();
 }
 
@@ -72,40 +62,29 @@ email:userEmail.value,
 event_id:eventSelect.value
 })
 });
-
-alert("Joined!");
+alert("Joined");
 }
 
-async function endEvent(){
-eventEnded=true;
-feedbackBox.classList.remove("hidden");
-alert("Event Ended");
+function endEvent(){
+feedback.classList.remove("hidden");
+certBtn.classList.remove("hidden");
 }
 
-async function sendFeedback(){
+async function submitFeedback(){
 await fetch(`${SUPABASE_URL}/rest/v1/feedback`,{
 method:"POST",
 headers,
 body:JSON.stringify({
 rating:rating.value,
-comment:comment.value
+event_id:eventSelect.value
 })
 });
-alert("Feedback Saved");
+alert("Feedback saved");
 }
 
 function downloadCert(){
-const text=`Certificate of Participation\n\n${userName.value}`;
-const blob=new Blob([text]);
 const a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
+a.href="data:text/plain,Certificate";
 a.download="certificate.txt";
 a.click();
 }
-
-async function loadStats(){
-const p=await fetch(`${SUPABASE_URL}/rest/v1/participants?select=*`,{headers});
-const f=await fetch(`${SUPABASE_URL}/rest/v1/feedback?select=*`,{headers});
-stats.innerHTML=`Participants: ${(await p.json()).length}<br>Feedback: ${(await f.json()).length}`;
-}
-
