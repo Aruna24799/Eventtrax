@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>EventTrax</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div id="home" class="screen">
@@ -14,6 +14,7 @@
 </div>
 
 <!-- ADMIN -->
+
 <div id="admin" class="screen hidden">
 
 <h2>Admin Panel</h2>
@@ -21,61 +22,36 @@
 <input id="eventName" placeholder="Event name">
 <button onclick="createEvent()">Create Event</button>
 
-<h3>Events</h3>
 <div id="events"></div>
-
-<h3>Participants</h3>
-<div id="participants"></div>
 
 <button onclick="goHome()">Back</button>
 
 </div>
 
 <!-- PARTICIPANT -->
+
 <div id="participant" class="screen hidden">
 
 <h2>Join Event</h2>
 
 <select id="eventSelect"></select>
 
-<input id="userName" placeholder="Your Name"/>
-
-<button onclick="joinEvent()">Join</button>
-
-<div id="feedbackBox" class="hidden">
-
-<h3>Feedback</h3>
-
-<select id="rating">
-<option value="5">⭐⭐⭐⭐⭐</option>
-<option value="4">⭐⭐⭐⭐</option>
-<option value="3">⭐⭐⭐</option>
-<option value="2">⭐⭐</option>
-<option value="1">⭐</option>
-</select>
-
-<textarea id="feedbackText" placeholder="Your feedback"></textarea>
-
-<button onclick="submitFeedback()">Submit Feedback</button>
-
-<button onclick="downloadCertificate()">Download Certificate</button>
-
-</div>
-
-<button onclick="goHome()">Back</button>
-
-</div>
-
-<h2>Join Event</h2>
-
 <input id="userName" placeholder="Your name">
 
-<select id="eventSelect"></select>
-
 <button onclick="joinEvent()">Join</button>
 
 <h3>Feedback</h3>
-<textarea id="feedbackText" placeholder="Your feedback"></textarea>
+
+<textarea id="feedbackText" placeholder="Feedback"></textarea>
+
+<select id="rating">
+<option>⭐</option>
+<option>⭐⭐</option>
+<option>⭐⭐⭐</option>
+<option>⭐⭐⭐⭐</option>
+<option>⭐⭐⭐⭐⭐</option>
+</select>
+
 <button onclick="submitFeedback()">Submit Feedback</button>
 
 <button onclick="downloadCertificate()">Download Certificate</button>
@@ -84,14 +60,8 @@
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
