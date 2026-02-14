@@ -34,7 +34,7 @@ function goHome(){
 location.reload();
 }
 
-async function createEvent(){
+async function createNewEvent(){
 const name = document.getElementById("eventName").value;
 if(!name) return alert("Enter event");
 
@@ -111,6 +111,7 @@ pdf.text(`Event: ${joinedEvent}`,50,80);
 
 pdf.save("certificate.pdf");
 }
+
 
 
 
