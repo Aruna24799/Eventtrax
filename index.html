@@ -1,39 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>EventTrax</title>
+
 <link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 
 <body>
 
-<div id="participant" class="hidden">
+<div id="home" class="screen">
+  <h1>EventTrax</h1>
+  <button onclick="openAdmin()">Admin</button>
+  <button onclick="openParticipant()">Participant</button>
+</div>
 
-  <div class="card">
-    <h2>Join Event</h2>
+<!-- ADMIN -->
 
-    <select id="eventSelect"></select>
-    <input type="text" id="participantName" placeholder="Your Name">
-    <button onclick="joinEvent()">Join</button>
-  </div>
+<div id="admin" class="screen hidden">
 
-  <div class="card">
-    <h2>Feedback</h2>
+<h2>Admin Panel</h2>
 
-    <textarea id="feedbackText" placeholder="Write feedback"></textarea>
+<input id="eventName" placeholder="Event name">
+<button onclick="createEvent()">Create Event</button>
 
-    <select id="rating">
-      <option value="1">⭐</option>
-      <option value="2">⭐⭐</option>
-      <option value="3">⭐⭐⭐</option>
-      <option value="4">⭐⭐⭐⭐</option>
-      <option value="5">⭐⭐⭐⭐⭐</option>
-    </select>
+<div id="events"></div>
 
-    <button onclick="submitFeedback()">Submit Feedback</button>
-    <button onclick="downloadCertificate()">Download Certificate</button>
-    <button onclick="goHome()">Back</button>
-  </div>
+<button onclick="goHome()">Back</button>
 
 </div>
 
@@ -45,23 +41,29 @@
 
 <select id="eventSelect"></select>
 
-<input id="userName" placeholder="Your name">
+<input id="nameInput" placeholder="Your name">
 
 <button onclick="joinEvent()">Join</button>
 
+<hr>
+
 <h3>Feedback</h3>
+
+<input id="participantName" placeholder="Your Name">
 
 <textarea id="feedbackText" placeholder="Feedback"></textarea>
 
 <select id="rating">
-<option>⭐</option>
-<option>⭐⭐</option>
-<option>⭐⭐⭐</option>
-<option>⭐⭐⭐⭐</option>
-<option>⭐⭐⭐⭐⭐</option>
+<option value="1">⭐</option>
+<option value="2">⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="5">⭐⭐⭐⭐⭐</option>
 </select>
 
 <button onclick="submitFeedback()">Submit Feedback</button>
+
+<hr>
 
 <button onclick="downloadCertificate()">Download Certificate</button>
 
@@ -69,11 +71,7 @@
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="script.js"></script>
 
 </body>
 </html>
-
-
-
