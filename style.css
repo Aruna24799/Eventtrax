@@ -1,54 +1,54 @@
 body{
 margin:0;
-font-family:Arial;
-background:#0f172a;
+font-family:Segoe UI;
+background:#020617;
 color:white;
 }
 
 .center{
 height:100vh;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-gap:20px;
+flex-direction:column;
 }
 
-button{
-padding:12px 20px;
-border:none;
-border-radius:8px;
-background:#6366f1;
-color:white;
-cursor:pointer;
-}
-
-input,select,textarea{
-width:260px;
-padding:10px;
-margin:8px;
-border-radius:6px;
-border:none;
+.card{
+background:#0f172a;
+padding:40px;
+border-radius:18px;
+box-shadow:0 0 50px #0ea5e9;
 }
 
 .panel{
-padding:30px;
+padding:40px;
+max-width:500px;
+margin:40px auto;
+background:#0f172a;
+border-radius:20px;
+box-shadow:0 0 40px #0ea5e9;
+text-align:center;
 }
 
-.hidden{
-display:none;
+button{
+padding:12px 30px;
+margin:10px;
+border:none;
+border-radius:8px;
+background:#0ea5e9;
+color:white;
+cursor:pointer;
+font-size:15px;
 }
 
-#events div{
-background:#1e293b;
-margin:8px;
-padding:10px;
-border-radius:6px;
+input,select{
+width:90%;
+padding:12px;
+margin:10px;
+border-radius:8px;
+border:none;
 }
 
-#qr{
-margin:20px;
-background:white;
-padding:10px;
-}
+.hidden{display:none;}
 
+#qr{margin:20px;}
