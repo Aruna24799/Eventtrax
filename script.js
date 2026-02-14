@@ -4,29 +4,45 @@
 const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
 
-const headers={
-apikey:SUPABASE_KEY,
-Authorization:`Bearer ${SUPABASE_KEY}`,
+
+const headers = {
+apikey: SUPABASE_KEY,
+Authorization: "Bearer " + SUPABASE_KEY,
 "Content-Type":"application/json"
 };
 
-function show(id){
-document.querySelectorAll(".screen").forEach(s=>s.classList.add("hidden"));
-document.getElementById(id).classList.remove("hidden");
+const home=document.getElementById("home");
+const admin=document.getElementById("admin");
+const participant=document.getElementById("participant");
+const eventsDiv=document.getElementById("events");
+const eventSelect=document.getElementById("eventSelect");
+
+function openAdmin(){
+home.classList.add("hidden");
+admin.classList.remove("hidden");
+loadEvents();
 }
 
-function openAdmin(){show("admin");loadEvents();}
-function openParticipant(){show("participant");loadEvents();}
-function goHome(){show("home");}
+function openParticipant(){
+home.classList.add("hidden");
+participant.classList.remove("hidden");
+loadEvents();
+}
+
+function goHome(){
+location.reload();
+}
+
+/* ================= EVENTS ================= */
 
 async function createEvent(){
-const name=document.getElementById("eventName").value;
-if(!name) return alert("Enter event");
+const name=document.getElementById("eventName").value.trim();
+if(!name)return alert("Enter event");
 
 await fetch(`${SUPABASE_URL}/rest/v1/events`,{
 method:"POST",
 headers,
-body:JSON.stringify({name})
+body:JSON.stringify({ name })
 });
 
 document.getElementById("eventName").value="";
@@ -34,52 +50,62 @@ loadEvents();
 }
 
 async function loadEvents(){
-const r=await fetch(`${SUPABASE_URL}/rest/v1/events?select=*`,{headers});
-const data=await r.json();
 
-events.innerHTML="";
+const res=await fetch(`${SUPABASE_URL}/rest/v1/events?select=*`,{headers});
+const data=await res.json();
+
+eventsDiv.innerHTML="";
 eventSelect.innerHTML="";
 
 data.forEach(e=>{
-events.innerHTML+=`<div>${e.name}</div>`;
+eventsDiv.innerHTML+=`<div>${e.name}</div>`;
 eventSelect.innerHTML+=`<option value="${e.id}">${e.name}</option>`;
 });
 }
 
+/* ================= PARTICIPANT ================= */
+
 async function joinEvent(){
-const name=nameInput.value;
+
+const name=document.getElementById("userName").value.trim();
 const event_id=eventSelect.value;
+
+if(!name)return alert("Enter name");
 
 await fetch(`${SUPABASE_URL}/rest/v1/participants`,{
 method:"POST",
 headers,
-body:JSON.stringify({name,event_id})
+body:JSON.stringify({ name,event_id })
 });
 
-alert("Joined");
+alert("Joined!");
+document.getElementById("userName").value="";
 }
 
+/* ================= FEEDBACK ================= */
+
 async function submitFeedback(){
-const name=participantName.value;
-const text=feedbackText.value;
-const ratingVal=rating.value;
+
+const name=document.getElementById("fbName").value.trim();
+const text=document.getElementById("fbText").value.trim();
+const rating=document.getElementById("fbRating").value;
+
+if(!name||!text)return alert("Fill feedback");
 
 await fetch(`${SUPABASE_URL}/rest/v1/feedback`,{
 method:"POST",
 headers,
-body:JSON.stringify({name,text,rating:ratingVal})
+body:JSON.stringify({ name,text,rating })
 });
 
-alert("Feedback sent");
+alert("Feedback submitted");
 }
+
+/* ================= CERTIFICATE ================= */
 
 function downloadCertificate(){
-const {jsPDF}=window.jspdf;
-const doc=new jsPDF();
-doc.text(`Certificate for ${nameInput.value}`,20,40);
-doc.save("certificate.pdf");
+alert("Certificate download demo");
 }
-
 
 
 
