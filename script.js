@@ -143,6 +143,30 @@ doc.text("EventTrax", 90, 150);
 
 doc.save("certificate.pdf");
 }
+function downloadCertificate(){
+
+const { jsPDF } = window.jspdf;
+
+const name = document.getElementById("userName").value || "Participant";
+const eventSelect = document.getElementById("eventSelect");
+const eventText = eventSelect.options[eventSelect.selectedIndex].text;
+
+const doc = new jsPDF();
+
+doc.setFontSize(22);
+doc.text("Certificate of Participation", 50, 40);
+
+doc.setFontSize(14);
+doc.text("This certifies that", 70, 70);
+doc.text(name, 70, 85);
+doc.text("has successfully participated in", 45, 100);
+doc.text(eventText, 70, 115);
+
+doc.text("EventTrax", 80, 150);
+
+doc.save("certificate.pdf");
+
+}
 
 
 
