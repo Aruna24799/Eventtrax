@@ -23,13 +23,16 @@ function openAdmin(){
   admin.classList.remove("hidden");
   loadEvents();
 }
-
-function openParticipant(){
-  home.classList.add("hidden");
-  participant.classList.remove("hidden");
-  loadEvents();
+function generateQR(){
+document.getElementById("qr").innerHTML="";
+new QRCode(document.getElementById("qr"), window.location.href);
 }
-
+function openParticipant(){
+home.classList.add("hidden");
+participant.classList.remove("hidden");
+loadEvents();
+generateQR();
+}
 function goHome(){
   location.reload();
 }
@@ -117,6 +120,7 @@ data.forEach(p=>{
 participantsDiv.innerHTML += `<div>${p.name}</div>`;
 });
 }
+
 
 
 
