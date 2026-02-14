@@ -4,78 +4,245 @@
 <meta charset="UTF-8">
 <title>EventTrax</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+.container{
+width:400px;
+background:#020617;
+padding:25px;
+border-radius:12px;
+text-align:center;
+}
 
+button,input,select,textarea{
+width:100%;
+margin-top:10px;
+padding:10px;
+border-radius:6px;
+border:none;
+}
+
+button{
+background:#06b6d4;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+.hidden{display:none;}
+
+.section{margin-top:15px;}
+
+.list div{
+background:#1e293b;
+padding:8px;
+margin:5px 0;
+border-radius:6px;
+cursor:pointer;
+}
+
+.star{
+font-size:25px;
+cursor:pointer;
+color:gray;
+}
+
+.star.active{color:gold;}
+</style>
 </head>
 
 <body>
 
-<div id="home" class="screen">
-  <h1>EventTrax</h1>
-  <button onclick="openAdmin()">Admin</button>
-  <button onclick="openParticipant()">Participant</button>
+<div class="container">
+
+<h2>EventTrax</h2>
+
+<div id="home">
+<button onclick="showAdmin()">Admin</button>
+<button onclick="showParticipant()">Participant</button>
 </div>
 
 <!-- ADMIN -->
 
-<div id="admin" class="screen hidden">
+<div id="admin" class="hidden">
 
-<h2>Admin Panel</h2>
+<h3>Admin Panel</h3>
 
-<input id="eventName" placeholder="Event name">
+<input id="eventName" placeholder="Event Name">
+
 <button onclick="createEvent()">Create Event</button>
 
-<div id="events"></div>
+<div class="section list" id="events"></div>
 
-<button onclick="goHome()">Back</button>
+<button onclick="endEvent()">End Selected Event</button>
+
+<h4>Analytics</h4>
+<div id="analytics"></div>
+
+<button onclick="back()">Back</button>
 
 </div>
 
 <!-- PARTICIPANT -->
 
-<div id="participant" class="screen hidden">
+<div id="participant" class="hidden">
 
-<div class="card">
-
-<h2>Join Event</h2>
+<h3>Join Event</h3>
 
 <select id="eventSelect"></select>
 
-<input id="userName" placeholder="Your name">
+<input id="name" placeholder="Your Name">
 
-<button onclick="joinEvent()">Join</button>
+<button onclick="join()">Join</button>
 
-<hr>
+<div id="afterJoin" class="hidden">
 
-<h3>Feedback</h3>
+<h4>Feedback</h4>
 
-<input id="fbName" placeholder="Your Name">
+<textarea id="feedbackText" placeholder="Your feedback"></textarea>
 
-<textarea id="fbText" placeholder="Feedback"></textarea>
-
-<select id="fbRating">
-<option value="1">⭐</option>
-<option value="2">⭐⭐</option>
-<option value="3">⭐⭐⭐</option>
-<option value="4">⭐⭐⭐⭐</option>
-<option value="5">⭐⭐⭐⭐⭐</option>
-</select>
+<div>
+<span class="star" onclick="rate(1)">★</span>
+<span class="star" onclick="rate(2)">★</span>
+<span class="star" onclick="rate(3)">★</span>
+<span class="star" onclick="rate(4)">★</span>
+<span class="star" onclick="rate(5)">★</span>
+</div>
 
 <button onclick="submitFeedback()">Submit Feedback</button>
 
-<hr>
+<button onclick="download()">Download Certificate</button>
 
-<button onclick="downloadCertificate()">Download Certificate</button>
+</div>
 
-<button onclick="goHome()">Back</button>
+<button onclick="back()">Back</button>
 
 </div>
 
 </div>
-<script src="script.js"></script>
+
+<script>
+
+let selectedEvent=null;
+let rating=0;
+
+function db(){
+return JSON.parse(localStorage.getItem("events")||"[]");
+}
+
+function save(data){
+localStorage.setItem("events",JSON.stringify(data));
+}
+
+function showAdmin(){
+home.style.display="none";
+admin.classList.remove("hidden");
+loadEvents();
+}
+
+function showParticipant(){
+home.style.display="none";
+participant.classList.remove("hidden");
+loadDropdown();
+}
+
+function back(){
+location.reload();
+}
+
+function createEvent(){
+let name=eventName.value.trim();
+if(!name)return alert("Enter event");
+
+let data=db();
+data.push({name,participants:[],feedback:[],ended:false});
+save(data);
+eventName.value="";
+loadEvents();
+}
+
+function loadEvents(){
+events.innerHTML="";
+db().forEach((e,i)=>{
+events.innerHTML+=`<div onclick="selectedEvent=${i}">${e.name}</div>`;
+});
+}
+
+function endEvent(){
+if(selectedEvent===null)return alert("Select event");
+let data=db();
+data[selectedEvent].ended=true;
+save(data);
+analytics.innerHTML=
+`Participants: ${data[selectedEvent].participants.length}<br>
+Feedback: ${data[selectedEvent].feedback.length}`;
+alert("Event ended");
+}
+
+function loadDropdown(){
+eventSelect.innerHTML="";
+db().forEach((e,i)=>{
+eventSelect.innerHTML+=`<option value="${i}">${e.name}</option>`;
+});
+}
+
+function join(){
+let i=eventSelect.value;
+let name=document.getElementById("name").value;
+if(!name)return alert("Enter name");
+
+let data=db();
+data[i].participants.push(name);
+save(data);
+
+if(data[i].ended){
+afterJoin.classList.remove("hidden");
+}else{
+alert("Wait until event ends");
+}
+}
+
+function rate(r){
+rating=r;
+document.querySelectorAll(".star").forEach((s,i)=>{
+s.classList.toggle("active",i<r);
+});
+}
+
+function submitFeedback(){
+let text=feedbackText.value;
+if(!rating)return alert("Give rating");
+
+let i=eventSelect.value;
+let data=db();
+data[i].feedback.push({text,rating});
+save(data);
+
+alert("Feedback saved");
+}
+
+function download(){
+let name=document.getElementById("name").value;
+let ev=db()[eventSelect.value].name;
+
+let blob=new Blob([`Certificate\n${name}\n${ev}`]);
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="certificate.txt";
+a.click();
+}
+
+</script>
 
 </body>
 </html>
-
