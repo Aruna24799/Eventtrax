@@ -8,18 +8,16 @@
 
 <body>
 
-<!-- HOME SCREEN -->
-<div id="home">
+<div id="home" class="screen">
   <h1>EventTrax</h1>
   <button onclick="openAdmin()">Admin</button>
   <button onclick="openParticipant()">Participant</button>
 </div>
 
-
-<!-- ADMIN SCREEN -->
-<div id="admin" class="hidden">
+<!-- ADMIN PAGE -->
+<div id="admin" class="screen hidden">
   <h2>Create Event</h2>
-  <input id="eventName" placeholder="Event name">
+  <input id="eventName" placeholder="Event Name">
   <button onclick="addEvent()">Create</button>
 
   <h3>Events</h3>
@@ -28,20 +26,17 @@
   <button onclick="goHome()">Back</button>
 </div>
 
+<!-- PARTICIPANT PAGE -->
+<div id="participant" class="screen hidden">
+  <h2>Join Event</h2>
 
-<!-- PARTICIPANT SCREEN -->
-<div id="participant" class="hidden">
-  <input id="userName" placeholder="Your name">
   <select id="eventSelect"></select>
+  <input id="userName" placeholder="Your Name">
   <button onclick="joinEvent()">Join</button>
 
   <button onclick="goHome()">Back</button>
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
-
-
-
