@@ -118,7 +118,30 @@ participantsDiv.innerHTML="";
 
 data.forEach(p=>{
 participantsDiv.innerHTML += `<div>${p.name}</div>`;
+  
 });
+}
+async function downloadCertificate(){
+
+const { jsPDF } = window.jspdf;
+
+const name = userName.value || "Participant";
+const eventText = eventSelect.options[eventSelect.selectedIndex].text;
+
+const doc = new jsPDF();
+
+doc.setFontSize(22);
+doc.text("Certificate of Participation", 60, 40);
+
+doc.setFontSize(14);
+doc.text(`This certifies that`, 80, 70);
+doc.text(name, 80, 85);
+doc.text(`successfully participated in`, 60, 100);
+doc.text(eventText, 80, 115);
+
+doc.text("EventTrax", 90, 150);
+
+doc.save("certificate.pdf");
 }
 
 
