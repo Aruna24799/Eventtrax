@@ -25,6 +25,8 @@
 
   <h3>Events</h3>
   <div id="events"></div>
+  <h3>Feedback</h3>
+  <div id="feedback"></div>
 
   <button onclick="goHome()">Back</button>
 </div>
@@ -32,6 +34,20 @@
 <!-- PARTICIPANT PAGE -->
 <div id="participant" class="screen hidden">
   <h2>Join Event</h2>
+  <h3>Feedback</h3>
+
+<select id="rating">
+<option value="">Rating</option>
+<option value="1">⭐</option>
+<option value="2">⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="5">⭐⭐⭐⭐⭐</option>
+</select>
+
+<textarea id="comment" placeholder="Your feedback"></textarea>
+
+<button onclick="submitFeedback()">Submit Feedback</button>
   
 
   <select id="eventSelect"></select>
@@ -46,6 +62,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
