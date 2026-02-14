@@ -36,6 +36,38 @@
 
 <h2>Join Event</h2>
 
+<select id="eventSelect"></select>
+
+<input id="userName" placeholder="Your Name"/>
+
+<button onclick="joinEvent()">Join</button>
+
+<div id="feedbackBox" class="hidden">
+
+<h3>Feedback</h3>
+
+<select id="rating">
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+</select>
+
+<textarea id="feedbackText" placeholder="Your feedback"></textarea>
+
+<button onclick="submitFeedback()">Submit Feedback</button>
+
+<button onclick="downloadCertificate()">Download Certificate</button>
+
+</div>
+
+<button onclick="goHome()">Back</button>
+
+</div>
+
+<h2>Join Event</h2>
+
 <input id="userName" placeholder="Your name">
 
 <select id="eventSelect"></select>
@@ -55,6 +87,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
