@@ -1,52 +1,41 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+body{
+margin:0;
+background:#0f2027;
+font-family:Arial;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
-.hidden {
-  display: none;
+.screen{
+text-align:center;
+width:320px;
 }
 
-.card {
-  background: rgba(0,0,0,0.6);
-  padding: 30px;
-  border-radius: 15px;
-  width: 320px;
-  margin: 20px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+.hidden{
+display:none;
 }
 
-input, select, textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: none;
+input,select,textarea,button{
+width:100%;
+margin:8px 0;
+padding:10px;
+border-radius:6px;
+border:none;
 }
 
-textarea {
-  height: 70px;
-  resize: none;
+button{
+background:#00c6ff;
+color:black;
+font-weight:bold;
+cursor:pointer;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: none;
-  background: #00c6ff;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0072ff;
+#events div{
+background:#222;
+margin:5px;
+padding:8px;
+cursor:pointer;
 }
