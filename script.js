@@ -17,7 +17,7 @@ const eventsDiv = document.getElementById("events");
 const eventSelect = document.getElementById("eventSelect");
 const eventName = document.getElementById("eventName");
 const userName = document.getElementById("userName");
-
+const feedbackDiv=document.getElementById("feedback");
 function openAdmin(){
   home.classList.add("hidden");
   admin.classList.remove("hidden");
@@ -76,7 +76,7 @@ async function loadEvents(){
   eventSelect.innerHTML = "";
 
   data.forEach(e=>{
-    eventsDiv.innerHTML += `<div onclick="loadParticipants(${e.id})">${e.name}</div>`;
+    eventsDiv.innerHTML += `<div onclick="loadParticipants(${e.id}); loadFeedback(${e.id})">${e.name}</div>`;
     eventSelect.innerHTML += `<option value="${e.id}">${e.name}</option>`;
   });
 }
@@ -166,6 +166,38 @@ doc.text("EventTrax", 80, 150);
 
 doc.save("certificate.pdf");
 
+}
+async function loadFeedback(eventId){
+
+const res=await fetch(`${SUPABASE_URL}/rest/v1/feedback?event_id=eq.${eventId}&select=*`,{headers});
+const data=await res.json();
+
+feedbackDiv.innerHTML="";
+
+data.forEach(f=>{
+feedbackDiv.innerHTML+=`<div>${f.rating}⭐ - ${f.comment||""}</div>`;
+});
+}
+async function submitFeedback(){
+
+const rating = document.getElementById("rating").value;
+const comment = document.getElementById("comment").value;
+const name = userName.value;
+const event_id = eventSelect.value;
+
+if(!rating){
+ alert("Select rating");
+ return;
+}
+
+await fetch(`${SUPABASE_URL}/rest/v1/feedback`,{
+method:"POST",
+headers,
+body:JSON.stringify({ name, rating, comment, event_id })
+});
+
+alert("Feedback submitted!");
+document.getElementById("comment").value="";
 }
 
 
