@@ -15,86 +15,94 @@ const admin = document.getElementById("admin");
 const participant = document.getElementById("participant");
 const eventsDiv = document.getElementById("events");
 const eventSelect = document.getElementById("eventSelect");
+const eventName = document.getElementById("eventName");
+const userName = document.getElementById("userName");
 
-function openAdmin() {
+function openAdmin(){
   home.classList.add("hidden");
   admin.classList.remove("hidden");
   loadEvents();
 }
 
-function openParticipant() {
+function openParticipant(){
   home.classList.add("hidden");
   participant.classList.remove("hidden");
   loadEvents();
 }
 
-function goHome() {
+function goHome(){
   location.reload();
 }
 
-async function addEvent() {
-  const name = document.getElementById("eventName").value.trim();
+/* renamed to avoid browser conflict */
+async function addEvent(){
 
-  if (!name) {
+  const name = eventName.value.trim();
+
+  if(!name){
     alert("Enter event name");
     return;
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
-    method: "POST",
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/events`,{
+    method:"POST",
     headers,
     body: JSON.stringify({ name })
   });
 
-  if (!res.ok) {
+  if(!res.ok){
     const err = await res.text();
+    console.log(err);
     alert(err);
     return;
   }
 
-  document.getElementById("eventName").value = "";
+  eventName.value = "";
   loadEvents();
 }
 
-async function loadEvents() {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/events?select=*`, { headers });
+async function loadEvents(){
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/events?select=*`,{
+    headers
+  });
+
   const data = await res.json();
 
   eventsDiv.innerHTML = "";
   eventSelect.innerHTML = "";
 
-  data.forEach(e => {
+  data.forEach(e=>{
     eventsDiv.innerHTML += `<div>${e.name}</div>`;
     eventSelect.innerHTML += `<option value="${e.id}">${e.name}</option>`;
   });
 }
 
-async function joinEvent() {
-  const name = document.getElementById("userName").value.trim();
+async function joinEvent(){
+
+  const name = userName.value.trim();
   const event_id = eventSelect.value;
 
-  if (!name) {
+  if(!name){
     alert("Enter your name");
     return;
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/participants`, {
-    method: "POST",
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/participants`,{
+    method:"POST",
     headers,
-    body: JSON.stringify({
-      name,
-      event_id: Number(event_id)
-    })
+    body: JSON.stringify({ name, event_id })
   });
 
-  if (!res.ok) {
+  if(!res.ok){
     const err = await res.text();
+    console.log(err);
     alert(err);
     return;
   }
 
-  alert("Joined!");
-  document.getElementById("userName").value = "";
+  alert("Joined successfully!");
+  userName.value = "";
 }
 
 
