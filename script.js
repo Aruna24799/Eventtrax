@@ -73,7 +73,7 @@ async function loadEvents(){
   eventSelect.innerHTML = "";
 
   data.forEach(e=>{
-    eventsDiv.innerHTML += `<div>${e.name}</div>`;
+    eventsDiv.innerHTML += `<div onclick="loadParticipants(${e.id})">${e.name}</div>`;
     eventSelect.innerHTML += `<option value="${e.id}">${e.name}</option>`;
   });
 }
@@ -103,6 +103,19 @@ async function joinEvent(){
 
   alert("Joined successfully!");
   userName.value = "";
+}
+const participantsDiv = document.getElementById("participants");
+
+async function loadParticipants(eventId){
+
+const res = await fetch(`${SUPABASE_URL}/rest/v1/participants?event_id=eq.${eventId}&select=*`,{headers});
+const data = await res.json();
+
+participantsDiv.innerHTML="";
+
+data.forEach(p=>{
+participantsDiv.innerHTML += `<div>${p.name}</div>`;
+});
 }
 
 
