@@ -88,3 +88,41 @@ border-radius:8px;
 width:240px;
 cursor:pointer;
 }
+.screen {
+display:flex;
+flex-direction:column;
+gap:15px;
+padding:20px;
+max-width:400px;
+margin:auto;
+}
+
+.section{
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-bottom:15px;
+}
+
+textarea,input{
+padding:10px;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:10px;
+border-radius:6px;
+border:none;
+background:#2196f3;
+color:white;
+cursor:pointer;
+}
+
+#events div{
+padding:6px;
+background:#333;
+margin:4px 0;
+border-radius:5px;
+cursor:pointer;
+}
