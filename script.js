@@ -216,6 +216,26 @@ body:JSON.stringify({ name, rating, comment, event_id })
 alert("Feedback submitted!");
 document.getElementById("comment").value="";
 }
+async function submitFeedback(){
+
+const name=document.getElementById("userName").value;
+const rating=document.getElementById("rating").value;
+const feedback=document.getElementById("feedbackText").value;
+
+await fetch(`${SUPABASE_URL}/rest/v1/feedback`,{
+method:"POST",
+headers,
+body:JSON.stringify({name,rating,feedback})
+});
+
+alert("Feedback submitted!");
+}
+
+function downloadCertificate(){
+alert("Certificate generated (demo)");
+}
+
+document.getElementById("feedbackBox").classList.remove("hidden");
 
 
 
