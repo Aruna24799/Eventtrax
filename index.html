@@ -1,158 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>EventTrax</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <style>
 body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#0f172a,#020617);
+background:#020617;
 color:white;
+font-family:sans-serif;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
+margin:0;
 }
 
-.card{
+.box{
 background:#020617;
+border:2px solid #0ea5e9;
 padding:30px;
-border-radius:12px;
+border-radius:15px;
 width:350px;
-box-shadow:0 0 20px #000;
+text-align:center;
+box-shadow:0 0 25px #0ea5e9;
 }
 
-input,button{
+input,select,button{
 width:100%;
 padding:10px;
-margin-top:10px;
+margin:8px 0;
 border-radius:6px;
 border:none;
 }
 
 button{
-background:#2563eb;
+background:#0ea5e9;
 color:white;
 cursor:pointer;
 }
 
-.hidden{display:none;}
+.hidden{display:none}
 </style>
 </head>
 
 <body>
 
-<div class="card" id="auth">
+<div class="box">
 
 <h2>EventTrax</h2>
 
+<div id="auth">
 <input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="signup()">Sign Up</button>
+<input id="password" placeholder="Password" type="password">
 <button onclick="login()">Login</button>
-
+<button onclick="signup()">Signup</button>
 </div>
 
-<div class="card hidden" id="dashboard">
+<div id="app" class="hidden">
 
-<h2 id="roleTitle"></h2>
+<h3>Create Event</h3>
+<input id="eventName">
+<button onclick="createEvent()">Create</button>
 
+<h3>Join Event</h3>
+<select id="events"></select>
+<input id="username" placeholder="Your name">
+<button onclick="joinEvent()">Join</button>
+
+<h3>Feedback</h3>
+<input id="rating" placeholder="1-5">
+<input id="message" placeholder="Message">
+<button onclick="submitFeedback()">Submit</button>
+
+<button onclick="downloadCert()">Download Certificate</button>
 <button onclick="logout()">Logout</button>
 
 </div>
 
-<script>
+</div>
 
-const SUPABASE_URL="sb_publishable_BOHqCxkzsVWChq-zAc4Q3Q_ED0khzHW";
-const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
-
-const supabase = supabaseJs.createClient(SUPABASE_URL,SUPABASE_KEY);
-
-async function signup(){
-
-const email=email.value;
-const pass=password.value;
-
-const {data,error}=await supabase.auth.signUp({email,password:pass});
-
-if(error)return alert(error.message);
-
-await supabase.from("profiles").insert({
-id:data.user.id,
-role:"participant"
-});
-
-alert("Account created. Login now.");
-
-}
-
-async function login(){
-
-const {data,error}=await supabase.auth.signInWithPassword({
-email:email.value,
-password:password.value
-});
-
-if(error)return alert(error.message);
-
-loadDashboard();
-
-}
-
-async function loadDashboard(){
-
-auth.classList.add("hidden");
-dashboard.classList.remove("hidden");
-
-const user=(await supabase.auth.getUser()).data.user;
-
-const profile=await supabase.from("profiles").select("*").eq("id",user.id).single();
-
-roleTitle.innerText="Logged in as "+profile.data.role;
-
-}
-
-async function logout(){
-await supabase.auth.signOut();
-location.reload();
-}
-
-supabase.auth.onAuthStateChange((e,s)=>{
-if(s)loadDashboard();
-});
-async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) alert(error.message);
-  else alert("Logged in");
-}
-
-async function signup() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const { error } = await supabase.auth.signUp({
-    email,
-    password
-  });
-
-  if (error) alert(error.message);
-  else alert("Signup successful");
-}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
-
-
-
