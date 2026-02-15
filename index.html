@@ -8,110 +8,7 @@
 body{
 background:#020617;
 color:white;
-font-family:sans-serif<!DOCTYPE html>
-<html>
-<head>
-<title>EventTrax</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-body{
-background:#020617;
-color:white;
-font-family:Arial;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
-
-.box{
-background:#020617;
-border:2px solid #0ea5e9;
-padding:30px;
-border-radius:15px;
-width:380px;
-text-align:center;
-box-shadow:0 0 30px #0ea5e9;
-}
-
-input,select,button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:6px;
-border:none;
-}
-
-button{
-background:#0ea5e9;
-color:white;
-font-size:15px;
-cursor:pointer;
-}
-
-h3{
-margin-top:25px;
-color:#38bdf8;
-}
-
-.hidden{display:none}
-</style>
-</head>
-
-<body>
-
-<div class="box">
-
-<h2>EventTrax</h2>
-
-<!-- AUTH -->
-<div id="auth">
-
-<input id="email" placeholder="Email">
-<input id="password" placeholder="Password" type="password">
-
-<button onclick="login()">Login</button>
-<button onclick="signup()">Signup</button>
-
-</div>
-
-<!-- MAIN APP -->
-<div id="app" class="hidden">
-
-<h3>Create Event</h3>
-<input id="eventName" placeholder="Event name">
-<button onclick="createEvent()">Create Event</button>
-
-<h3>Join Event</h3>
-<select id="events"></select>
-<input id="username" placeholder="Your name">
-<button onclick="joinEvent()">Join Event</button>
-
-<div id="afterJoin" class="hidden">
-
-<h3>Feedback</h3>
-<input id="rating" placeholder="Rating 1–5">
-<input id="message" placeholder="Your feedback">
-<button onclick="submitFeedback()">Submit Feedback</button>
-
-<button onclick="downloadCert()">Download Certificate</button>
-
-</div>
-
-<br>
-<button onclick="logout()">Logout</button>
-
-</div>
-
-</div>
-
-<script src="script.js"></script>
-
-</body>
-</html>;
+font-family:sans-serif;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -171,12 +68,17 @@ cursor:pointer;
 <input id="username" placeholder="Your name">
 <button onclick="joinEvent()">Join</button>
 
+<div id="afterJoin" class="hidden">
+
 <h3>Feedback</h3>
 <input id="rating" placeholder="1-5">
 <input id="message" placeholder="Message">
 <button onclick="submitFeedback()">Submit</button>
 
 <button onclick="downloadCert()">Download Certificate</button>
+
+</div>
+
 <button onclick="logout()">Logout</button>
 
 </div>
@@ -184,6 +86,6 @@ cursor:pointer;
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
-
