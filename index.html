@@ -1,59 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Eventrax</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+<meta charset="UTF-8">
+<title>EventTrax</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#0f172a,#020617);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.card{
+background:#020617;
+padding:30px;
+border-radius:12px;
+width:350px;
+box-shadow:0 0 20px #000;
+}
+
+input,button{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+}
+
+button{
+background:#2563eb;
+color:white;
+cursor:pointer;
+}
+
+.hidden{display:none;}
+</style>
 </head>
 
 <body>
 
-<div id="home" class="center">
-<h1>Eventrax</h1>
-<div class="card">
-<button onclick="openAdmin()">Admin</button>
-<button onclick="openParticipant()">Participant</button>
-</div>
-</div>
+<div class="card" id="auth">
 
-<div id="admin" class="hidden panel">
-<h2>Admin Dashboard</h2>
+<h2>EventTrax</h2>
 
-<input id="eventName" placeholder="Create Event">
-<button onclick="createEvent()">Create</button>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
-<h3>Events</h3>
-<div id="events"></div>
-
-<button onclick="endEvent()">End Event</button>
-<button onclick="goHome()">Exit</button>
-</div>
-
-<div id="participant" class="hidden panel">
-
-<h2>Join Event</h2>
-
-<div id="qr"></div>
-
-<select id="eventSelect"></select>
-
-<input id="userName" placeholder="Name">
-<input id="userEmail" placeholder="Email">
-
-<button onclick="joinEvent()">Join</button>
-
-<div id="feedback" class="hidden">
-<h3>Feedback</h3>
-<input id="rating" placeholder="Rating 1–5">
-<button onclick="submitFeedback()">Submit</button>
-</div>
-
-<button id="certBtn" class="hidden" onclick="downloadCert()">Download Certificate</button>
-
-<button onclick="goHome()">Exit</button>
+<button onclick="signup()">Sign Up</button>
+<button onclick="login()">Login</button>
 
 </div>
 
-<script src="./script.js"></script>
+<div class="card hidden" id="dashboard">
+
+<h2 id="roleTitle"></h2>
+
+<button onclick="logout()">Logout</button>
+
+</div>
+
+<script>
+
+const SUPABASE_URL="PASTE_SUPABASE_URL";
+const SUPABASE_KEY="PASTE_ANON_KEY";
+
+const supabase = supabaseJs.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+async function signup(){
+
+const email=email.value;
+const pass=password.value;
+
+const {data,error}=await supabase.auth.signUp({email,password:pass});
+
+if(error)return alert(error.message);
+
+await supabase.from("profiles").insert({
+id:data.user.id,
+role:"participant"
+});
+
+alert("Account created. Login now.");
+
+}
+
+async function login(){
+
+const {data,error}=await supabase.auth.signInWithPassword({
+email:email.value,
+password:password.value
+});
+
+if(error)return alert(error.message);
+
+loadDashboard();
+
+}
+
+async function loadDashboard(){
+
+auth.classList.add("hidden");
+dashboard.classList.remove("hidden");
+
+const user=(await supabase.auth.getUser()).data.user;
+
+const profile=await supabase.from("profiles").select("*").eq("id",user.id).single();
+
+roleTitle.innerText="Logged in as "+profile.data.role;
+
+}
+
+async function logout(){
+await supabase.auth.signOut();
+location.reload();
+}
+
+supabase.auth.onAuthStateChange((e,s)=>{
+if(s)loadDashboard();
+});
+
+</script>
+
 </body>
 </html>
