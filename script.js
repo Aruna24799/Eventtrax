@@ -1,68 +1,17 @@
-const supabase = window.supabase.createClient(
+const { createClient } = supabase;
+
+const client = createClient(
 "https://pxtpsugbuunjzurdvzkc.supabase.co",
-"YOUR_ANON_KEY"
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g"
 );
 
-const email = document.getElementById("email");
-const password = document.getElementById("password");
+document.getElementById("loginBtn").addEventListener("click", login);
+document.getElementById("signupBtn").addEventListener("click", signup);
 
-document.getElementById("signupBtn").onclick = signup;
-document.getElementById("loginBtn").onclick = login;
-document.getElementById("logoutBtn").onclick = logout;
-document.getElementById("createBtn").onclick = createEvent;
-document.getElementById("joinBtn").onclick = joinEvent;
-document.getElementById("feedbackBtn").onclick = submitFeedback;
-
-async function signup(){
-await supabase.auth.signUp({
-email: email.value,
-password: password.value
-});
-alert("Signup complete");
+function signup(){
+alert("signup clicked");
 }
 
-async function login(){
-await supabase.auth.signInWithPassword({
-email: email.value,
-password: password.value
-});
-auth.classList.add("hidden");
-app.classList.remove("hidden");
-loadEvents();
+function login(){
+alert("login clicked");
 }
-
-async function logout(){
-await supabase.auth.signOut();
-location.reload();
-}
-
-async function createEvent(){
-await supabase.from("events").insert({name:eventName.value});
-loadEvents();
-}
-
-async function loadEvents(){
-const {data}=await supabase.from("events").select("*");
-events.innerHTML="";
-data.forEach(e=>{
-events.innerHTML+=`<option value="${e.id}">${e.name}</option>`;
-});
-}
-
-async function joinEvent(){
-await supabase.from("participants").insert({
-name:username.value,
-event_id:events.value
-});
-alert("Joined");
-}
-
-async function submitFeedback(){
-await supabase.from("feedback").insert({
-event_id:events.value,
-rating:rating.value,
-message:message.value
-});
-alert("Feedback saved");
-}
-
