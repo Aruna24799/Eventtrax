@@ -53,6 +53,7 @@ cursor:pointer;
 <div id="auth">
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Password">
+
 <button id="loginBtn">Login</button>
 <button id="signupBtn">Signup</button>
 </div>
@@ -65,106 +66,18 @@ cursor:pointer;
 <select id="events"></select>
 
 <input id="username" placeholder="Your name">
-<button id="joinBtn">Join</button>
+<button id="joinBtn">Join Event</button>
 
-<input id="rating" placeholder="Rating 1-5">
+<input id="rating" placeholder="Rating">
 <input id="message" placeholder="Feedback">
-<button id="feedbackBtn">Submit Feedback</button>
 
-<button id="certBtn">Download Certificate</button>
+<button id="feedbackBtn">Submit Feedback</button>
 <button id="logoutBtn">Logout</button>
 
 </div>
 
 </div>
 
-<script>
-alert("JS loaded");
-const supabase = window.supabase.createClient(
-"https://pxtpsugbuunjzurdvzkc.supabase.co",
-"YOUR_ANON_KEY"
-);
-
-const authBox = document.getElementById("auth");
-const appBox = document.getElementById("app");
-
-document.getElementById("signupBtn").addEventListener("click", async () => {
-
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
-
-const {error}=await supabase.auth.signUp({email,password});
-
-if(error){ alert(error.message); return; }
-
-alert("Signup success");
-});
-
-document.getElementById("loginBtn").addEventListener("click", async () => {
-
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
-
-const {error}=await supabase.auth.signInWithPassword({email,password});
-
-if(error){ alert(error.message); return; }
-
-authBox.classList.add("hidden");
-appBox.classList.remove("hidden");
-
-loadEvents();
-});
-
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-await supabase.auth.signOut();
-location.reload();
-});
-
-document.getElementById("createBtn").addEventListener("click", async () => {
-
-const name=document.getElementById("eventName").value;
-
-await supabase.from("events").insert({name});
-document.getElementById("eventName").value="";
-loadEvents();
-});
-
-document.getElementById("joinBtn").addEventListener("click", async () => {
-
-await supabase.from("participants").insert({
-name:document.getElementById("username").value,
-event_id:document.getElementById("events").value
-});
-
-alert("Joined");
-});
-
-document.getElementById("feedbackBtn").addEventListener("click", async () => {
-
-await supabase.from("feedback").insert({
-event_id:document.getElementById("events").value,
-rating:document.getElementById("rating").value,
-message:document.getElementById("message").value
-});
-
-alert("Feedback saved");
-});
-
-document.getElementById("certBtn").addEventListener("click", ()=>{
-alert("Certificate demo");
-});
-
-async function loadEvents(){
-const {data}=await supabase.from("events").select("*");
-const select=document.getElementById("events");
-select.innerHTML="";
-data.forEach(e=>{
-select.innerHTML+=`<option value="${e.id}">${e.name}</option>`;
-});
-}
-
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
-
