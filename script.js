@@ -1,107 +1,88 @@
 const { createClient } = supabase;
 
-const client = createClient(
-"https://pxtpsugbuunjzurdvzkc.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g"
+const supabaseClient = createClient(
+  "https://pxtpsugbuunjzurdvzkc.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g"
 );
 
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const eventName = document.getElementById("eventName");
-const events = document.getElementById("events");
-const username = document.getElementById("username");
+// Inputs
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const eventNameInput = document.getElementById("eventName");
+const usernameInput = document.getElementById("username");
+const eventsSelect = document.getElementById("events");
 
+// Buttons
 document.getElementById("loginBtn").addEventListener("click", login);
 document.getElementById("signupBtn").addEventListener("click", signup);
 document.getElementById("createEventBtn").addEventListener("click", createEvent);
 document.getElementById("joinBtn").addEventListener("click", joinEvent);
 
-async function signup(){
-await client.auth.signUp({
-email: email.value,
-password: password.value
-});
-alert("Signup success");
+// ---------- AUTH ----------
+
+async function signup() {
+  const { error } = await supabaseClient.auth.signUp({
+    email: emailInput.value,
+    password: passwordInput.value
+  });
+
+  if (error) alert(error.message);
+  else alert("Signup successful. Now login.");
 }
 
-async function login(){
-await client.auth.signInWithPassword({
-email: email.value,
-password: password.value
-});
-alert("Login success");
-loadEvents();
+async function login() {
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: emailInput.value,
+    password: passwordInput.value
+  });
+
+  if (error) alert(error.message);
+  else {
+    alert("Login successful");
+    loadEvents();
+  }
 }
 
-async function createEvent(){
+// ---------- EVENTS ----------
 
-await client.from("events").insert({
-name: eventName.value
-});
+async function createEvent() {
+  if (!eventNameInput.value) return alert("Enter event name");
 
-eventName.value="";
-loadEvents();
+  const { error } = await supabaseClient
+    .from("events")
+    .insert([{ name: eventNameInput.value }]);
+
+  if (error) alert(error.message);
+
+  eventNameInput.value = "";
+  loadEvents();
 }
 
-async function loadEvents(){
+async function loadEvents() {
+  const { data, error } = await supabaseClient.from("events").select("*");
 
-const { data } = await client.from("events").select("*");
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
-events.innerHTML="";
+  eventsSelect.innerHTML = "";
 
-data.forEach(e=>{
-events.innerHTML += `<option value="${e.id}">${e.name}</option>`;
-});
+  data.forEach(e => {
+    eventsSelect.innerHTML += `<option value="${e.id}">${e.name}</option>`;
+  });
 }
 
-async function joinEvent(){
+// ---------- PARTICIPANTS ----------
 
-await client.from("participants").insert({
-name: username.value,
-event_id: events.value
-});
+async function joinEvent() {
+  if (!usernameInput.value) return alert("Enter your name");
 
-alert("Joined event");
-}const { createClient } = supabase;
+  const { error } = await supabaseClient.from("participants").insert([{
+    name: usernameInput.value,
+    event_id: eventsSelect.value
+  }]);
 
-const client = createClient(
-"https://pxtpsugbuunjzurdvzkc.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g"
-);
-
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-
-document.getElementById("loginBtn").addEventListener("click", login);
-document.getElementById("signupBtn").addEventListener("click", signup);
-
-async function signup(){
-
-const { error } = await client.auth.signUp({
-email: email.value,
-password: password.value
-});
-
-if(error){
-alert(error.message);
-}else{
-alert("Signup success — check email");
+  if (error) alert(error.message);
+  else alert("Joined event");
 }
-
-}
-
-async function login(){
-
-const { data, error } = await client.auth.signInWithPassword({
-email: email.value,
-password: password.value
-});
-
-if(error){
-alert(error.message);
-}else{
-alert("Login success");
-}
-
-}
-
