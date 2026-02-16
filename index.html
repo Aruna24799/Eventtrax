@@ -2,7 +2,9 @@
 <html>
 <head>
 <title>EventTrax</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<!-- Supabase CDN (ONLY ONCE) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 body{
@@ -53,8 +55,9 @@ cursor:pointer;
 <div id="auth">
 <input id="email" placeholder="Email">
 <input id="password" placeholder="Password" type="password">
-<button onclick="login()">Login</button>
+
 <button onclick="signup()">Signup</button>
+<button onclick="login()">Login</button>
 </div>
 
 <div id="app" class="hidden">
@@ -68,25 +71,20 @@ cursor:pointer;
 <input id="username" placeholder="Your name">
 <button onclick="joinEvent()">Join</button>
 
-<div id="afterJoin" class="hidden">
-
 <h3>Feedback</h3>
 <input id="rating" placeholder="1-5">
 <input id="message" placeholder="Message">
 <button onclick="submitFeedback()">Submit</button>
 
 <button onclick="downloadCert()">Download Certificate</button>
-
-</div>
-
 <button onclick="logout()">Logout</button>
 
 </div>
 
 </div>
 
+<!-- IMPORTANT: Script ONLY here -->
 <script src="./script.js"></script>
 
 </body>
 </html>
-
