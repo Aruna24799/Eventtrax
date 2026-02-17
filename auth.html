@@ -1,1 +1,26 @@
+<h2>EventTrax Login</h2>
+<input id="email">
+<input id="password" type="password">
+<button onclick="login()">Login</button>
+<button onclick="signup()">Signup</button>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<script>
+async function login(){
+ await db.auth.signInWithPassword({
+   email:email.value,
+   password:password.value
+ });
+ location.href="participant.html";
+}
+
+async function signup(){
+ await db.auth.signUp({
+   email:email.value,
+   password:password.value
+ });
+ alert("Check email");
+}
+</script>
