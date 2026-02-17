@@ -1,135 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>EventTrax - Authentication</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body{
-      background:#0b0f19;
-      color:white;
-      font-family:Arial, sans-serif;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      margin:0;
-    }
+<title>EventTrax Login</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-    .card{
-      background:#111827;
-      padding:40px;
-      border-radius:20px;
-      width:350px;
-      box-shadow:0 0 40px rgba(0,212,170,0.2);
-    }
+<style>
+body{
+background:#020617;
+color:white;
+font-family:sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
 
-    h2{text-align:center;margin-bottom:20px;}
+.box{
+background:#020617;
+border:2px solid #0ea5e9;
+padding:30px;
+border-radius:15px;
+width:350px;
+text-align:center;
+box-shadow:0 0 25px #0ea5e9;
+}
 
-    input,select{
-      width:100%;
-      padding:12px;
-      margin:10px 0;
-      border:none;
-      border-radius:8px;
-      background:#1f2937;
-      color:white;
-    }
+input,button{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
 
-    button{
-      width:100%;
-      padding:12px;
-      margin-top:15px;
-      border:none;
-      border-radius:8px;
-      background:#00d4aa;
-      font-weight:bold;
-      cursor:pointer;
-    }
-
-    .switch{
-      text-align:center;
-      margin-top:15px;
-      cursor:pointer;
-      color:#00d4aa;
-    }
-  </style>
+button{
+background:#0ea5e9;
+color:white;
+cursor:pointer;
+font-weight:bold;
+}
+</style>
 </head>
+
 <body>
 
-<div class="card">
-  <h2 id="title">Sign In</h2>
+<div class="box">
 
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
+<h2>EventTrax</h2>
 
-  <select id="role" style="display:none">
-    <option value="participant">Participant</option>
-    <option value="admin">Admin</option>
-  </select>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
-  <button onclick="handleAuth()">Continue</button>
+<button onclick="signup()">Signup</button>
+<button onclick="login()">Login</button>
 
-  <div class="switch" onclick="toggleMode()">
-    Switch to Sign Up
-  </div>
 </div>
 
-<script>
-const supabase = window.supabase.createClient(
-  "https://pxtpsugbuunjzurdvzkc.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g"
-);
-
-let mode = "signin";
-
-function toggleMode(){
-  mode = mode === "signin" ? "signup" : "signin";
-  document.getElementById("title").innerText =
-    mode === "signin" ? "Sign In" : "Sign Up";
-  document.getElementById("role").style.display =
-    mode === "signup" ? "block" : "none";
-}
-
-async function handleAuth(){
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const role = document.getElementById("role").value;
-
-  if(mode === "signup"){
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options:{
-        data:{
-          role: role,
-          full_name: email
-        }
-      }
-    });
-
-    if(error){
-      alert(error.message);
-      return;
-    }
-
-    alert("Signup successful. Please login.");
-    toggleMode();
-  }
-  else{
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if(error){
-      alert(error.message);
-      return;
-    }
-
-    window.location.href = "dashboard.html";
-  }
-}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
