@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EventTrax Login</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<style>
+body{
+background:#020617;
+color:white;
+font-family:sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.box{
+background:#020617;
+border:2px solid #0ea5e9;
+padding:30px;
+border-radius:15px;
+width:350px;
+text-align:center;
+box-shadow:0 0 25px #0ea5e9;
+}
+
+input,button{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:none;
+}
+
+button{
+background:#0ea5e9;
+color:white;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>EventTrax</h2>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="signup()">Signup</button>
+<button onclick="login()">Login</button>
+</div>
+
+<script>
+const supabase = window.supabase.createClient(
+"https://pxtpsugbuunjzurdvzkc.supabase.co",
+"PASTE_YOUR_ANON_KEY"
+);
+
+async function signup(){
+const {error}=await supabase.auth.signUp({
+email:email.value,
+password:password.value
+});
+if(error) alert(error.message);
+else alert("Signup success");
+}
+
+async function login(){
+const {error}=await supabase.auth.signInWithPassword({
+email:email.value,
+password:password.value
+});
+if(error) alert(error.message);
+else location.href="dashboard.html";
+}
+</script>
+
+</body>
+</html>
