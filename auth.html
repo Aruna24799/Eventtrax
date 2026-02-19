@@ -20,38 +20,46 @@
 const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+/* IMPORTANT FIX */
+const client = supabaseJs.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// AUTO REDIRECT IF LOGGED IN
-supabase.auth.onAuthStateChange((event, session) => {
-  if (session) {
+/* Redirect ONLY when actually signed in */
+client.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_IN") {
     window.location.href = "dashboard.html";
   }
 });
 
+/* SIGNUP */
 async function signup() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { error } = await supabase.auth.signUp({
+  const { error } = await client.auth.signUp({
     email,
     password
   });
 
-  if (error) alert(error.message);
-  else alert("Signup success. Now login.");
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Signup successful. Check your email to confirm.");
+  }
 }
 
+/* LOGIN */
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { error } = await client.auth.signInWithPassword({
     email,
     password
   });
 
-  if (error) alert(error.message);
+  if (error) {
+    alert(error.message);
+  }
 }
 </script>
 
