@@ -1,60 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>EventTrax Login</title>
-</head>
+<h1>Welcome to EventTrax Dashboard</h1>
 
-<body>
-
-<h2>EventTrax Login</h2>
-
-<input id="email" placeholder="Email"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
-
-<button onclick="login()">Login</button>
-<button onclick="signup()">Signup</button>
-
-<!-- Supabase CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<button onclick="logout()">Logout</button>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
+const client = supabase.createClient("YOUR_PROJECT_URL","YOUR_ANON_KEY");
 
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Stay logged in
-(async () => {
-  const { data } = await client.auth.getSession();
-  if (data.session) {
-    window.location.href = "dashboard.html";
-  }
-})();
-
-async function signup(){
-  const email=document.getElementById("email").value;
-  const password=document.getElementById("password").value;
-
-  const { error } = await client.auth.signUp({ email, password });
-
-  if(error) alert(error.message);
-  else alert("Signup success. Check email if confirmation enabled.");
-}
-
-async function login(){
-  const email=document.getElementById("email").value;
-  const password=document.getElementById("password").value;
-
-  const { data, error } = await client.auth.signInWithPassword({ email, password });
-
-  if(error){
-    alert(error.message);
-  } else {
-    window.location.href="dashboard.html";
-  }
+async function logout(){
+  await client.auth.signOut();
+  window.location.href="auth.html";
 }
 </script>
-</body>
-</html>
