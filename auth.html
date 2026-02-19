@@ -14,40 +14,39 @@
 <button onclick="login()">Login</button>
 <button onclick="signup()">Signup</button>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 <script>
+
 const SUPABASE_URL = "https://pxtpsugbuunjzurdvzkc.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dHBzdWdidXVuanp1cmR2emtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NDY4OTIsImV4cCI6MjA4NjEyMjg5Mn0.VXRKe2AXSiv8vRxfoPDyBl9McRmkYDVUBcRN2Jy6q5g";
 
-/* IMPORTANT FIX */
-const client = supabaseJs.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* Redirect ONLY when actually signed in */
-client.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_IN") {
+// Redirect if already logged in
+client.auth.getSession().then(({ data }) => {
+  if (data.session) {
     window.location.href = "dashboard.html";
   }
 });
 
-/* SIGNUP */
+// Signup
 async function signup() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { error } = await client.auth.signUp({
-    email,
-    password
-  });
+  const { error } = await client.auth.signUp({ email, password });
 
   if (error) {
     alert(error.message);
   } else {
-    alert("Signup successful. Check your email to confirm.");
+    alert("Signup success! Check email if confirmation is enabled.");
   }
 }
 
-/* LOGIN */
+// Login
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -59,8 +58,11 @@ async function login() {
 
   if (error) {
     alert(error.message);
+  } else {
+    window.location.href = "dashboard.html";
   }
 }
+
 </script>
 
 </body>
